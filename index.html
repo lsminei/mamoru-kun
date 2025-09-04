@@ -1203,6 +1203,44 @@
 
           <div style="margin-bottom: 20px">
             <label
+              for="employees"
+              style="
+                display: block;
+                margin-bottom: 8px;
+                font-weight: bold;
+                color: #333;
+              "
+            >
+              従業員数 <span style="color: #ff6b35">*</span>
+            </label>
+            <select
+              id="employees"
+              name="employees"
+              required
+              style="
+                width: 100%;
+                padding: 12px;
+                border: 2px solid #ddd;
+                border-radius: 8px;
+                font-size: 16px;
+                transition: border-color 0.3s;
+                background: white;
+              "
+              onfocus="this.style.borderColor='#ff6b35'"
+              onblur="this.style.borderColor='#ddd'"
+            >
+              <option value="">選択してください</option>
+              <option value="1-10">1～10名</option>
+              <option value="11-30">11～30名</option>
+              <option value="31-50">31～50名</option>
+              <option value="51-100">51～100名</option>
+              <option value="101-300">101～300名</option>
+              <option value="301+">301名以上</option>
+            </select>
+          </div>
+
+          <div style="margin-bottom: 20px">
+            <label
               for="phone"
               style="
                 display: block;
@@ -1319,6 +1357,7 @@
             company: document.getElementById("company").value,
             name: document.getElementById("name").value,
             email: document.getElementById("email").value,
+            employees: document.getElementById("employees").value,
             phone: document.getElementById("phone").value || null,
             message: document.getElementById("message").value || null,
             created_at: new Date().toISOString(),

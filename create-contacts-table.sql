@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS public.contacts (
     company TEXT NOT NULL,
     name TEXT NOT NULL,
     email TEXT NOT NULL,
+    employees TEXT NOT NULL,
     phone TEXT,
     message TEXT,
     created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
