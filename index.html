@@ -1047,7 +1047,7 @@
         // 非表示にしたいセクションのIDを配列で指定
         hideSections: [
           // "intro-section",      // イントロダクション
-          // "client-logos",       // 企業ロゴ
+          "client-logos", // 企業ロゴ
           // "problem-section",    // 課題
           // "solution-section",   // 解決策
           // "results-section",    // 実績
@@ -1055,50 +1055,50 @@
           // "contact-form",       // 事前登録フォーム
           // "company-section",    // 会社情報
         ],
-        
+
         // セクションの表示順序（上から順に表示）
         sectionOrder: [
-          "hero-section",        // 1. ヒーロー
-          "intro-section",       // 2. イントロダクション
-          "client-logos",        // 3. 企業ロゴ
-          "problem-section",     // 4. 課題
-          "solution-section",    // 5. 解決策
-          "results-section",     // 6. 実績
-          "pricing-section",     // 7. 料金
-          "contact-form",        // 8. 事前登録
-          "company-section",     // 9. 会社情報
-        ]
+          "hero-section", // 1. ヒーロー
+          "intro-section", // 2. イントロダクション
+          "client-logos", // 3. 企業ロゴ
+          "problem-section", // 4. 課題
+          "solution-section", // 5. 解決策
+          "results-section", // 6. 実績
+          "pricing-section", // 7. 料金
+          "contact-form", // 8. 事前登録
+          "company-section", // 9. 会社情報
+        ],
       };
-      
+
       // ページロード時にセクション制御を適用
-      document.addEventListener('DOMContentLoaded', function() {
+      document.addEventListener("DOMContentLoaded", function () {
         // セクションの表示/非表示
-        SECTION_CONFIG.hideSections.forEach(sectionId => {
+        SECTION_CONFIG.hideSections.forEach((sectionId) => {
           const section = document.getElementById(sectionId);
           if (section) {
-            section.style.display = 'none';
+            section.style.display = "none";
           }
         });
-        
+
         // セクションの並び替え（オプション - コメントアウトで無効化可能）
         // reorderSections();
       });
-      
+
       // セクションの並び替え関数
       function reorderSections() {
-        const mainContent = document.getElementById('main-content');
+        const mainContent = document.getElementById("main-content");
         if (!mainContent) return;
-        
+
         const sections = {};
-        SECTION_CONFIG.sectionOrder.forEach(id => {
+        SECTION_CONFIG.sectionOrder.forEach((id) => {
           const section = document.getElementById(id);
           if (section) {
             sections[id] = section;
             section.remove();
           }
         });
-        
-        SECTION_CONFIG.sectionOrder.forEach(id => {
+
+        SECTION_CONFIG.sectionOrder.forEach((id) => {
           if (sections[id]) {
             mainContent.appendChild(sections[id]);
           }
@@ -1120,9 +1120,7 @@
       <a href="#results-section">実績</a>
       <a href="#pricing-section">料金</a>
       <a href="#company-section">会社情報</a>
-      <a href="admin-login.html" class="admin-login-btn">
-        🔐 管理者ログイン
-      </a>
+      <a href="admin-login.html" class="admin-login-btn"> 🔐 管理者ログイン </a>
     </div>
 
     <!-- メニューオーバーレイ -->
@@ -1135,658 +1133,663 @@
 
     <!-- メインコンテンツ -->
     <div id="main-content">
-    
-    <!-- ヒーローセクション -->
-    <section id="hero-section" class="hero-section">
-      <!-- アニメーション背景 -->
-      <div class="hero-bg-animation">
-        <div class="floating-shape shape-1"></div>
-        <div class="floating-shape shape-2"></div>
-        <div class="floating-shape shape-3"></div>
-      </div>
-
-      <!-- パーティクル -->
-      <div class="particles" id="particles"></div>
-
-      <div class="hero-container">
-        <div class="hero-text">
-          <h1>守くん</h1>
-          <div class="typing-text">
-            <span id="typing"></span>
-          </div>
-
-          <!-- 統計バッジ -->
-          <div class="stats-badges">
-            <div class="stat-badge">
-              <span class="stat-number" data-count="500">0</span>
-              <span class="stat-label">円/月</span>
-            </div>
-            <div class="stat-badge">
-              <span class="stat-number" data-count="15">0</span>
-              <span class="stat-label">秒で完了</span>
-            </div>
-            <div class="stat-badge">
-              <span class="stat-number" data-count="89">0</span>
-              <span class="stat-label">% 継続率</span>
-            </div>
-          </div>
-
-          <!-- CTAボタン -->
-          <div class="cta-wrapper">
-            <a
-              href="#contactForm"
-              class="cta-primary"
-            >
-              事前登録はこちら
-            </a>
-            <a href="#demo" class="cta-secondary">
-              <div class="play-icon">▶</div>
-              <span>デモを見る</span>
-            </a>
-          </div>
+      <!-- ヒーローセクション -->
+      <section id="hero-section" class="hero-section">
+        <!-- アニメーション背景 -->
+        <div class="hero-bg-animation">
+          <div class="floating-shape shape-1"></div>
+          <div class="floating-shape shape-2"></div>
+          <div class="floating-shape shape-3"></div>
         </div>
 
-        <!-- スマートフォンモックアップ -->
-        <div class="hero-phone">
-          <div class="phone-mockup">
-            <div class="phone-screen">
-              <div class="screen-content active" id="screen1">
-                <div class="demo-animation">守</div>
-                <div class="demo-text">
-                  <h3>15秒エクササイズ</h3>
-                  <p>毎日続けられる健康習慣</p>
+        <!-- パーティクル -->
+        <div class="particles" id="particles"></div>
+
+        <div class="hero-container">
+          <div class="hero-text">
+            <h1>守くん</h1>
+            <div class="typing-text">
+              <span id="typing"></span>
+            </div>
+
+            <!-- 統計バッジ -->
+            <div class="stats-badges">
+              <div class="stat-badge">
+                <span class="stat-number" data-count="500">0</span>
+                <span class="stat-label">円/月</span>
+              </div>
+              <div class="stat-badge">
+                <span class="stat-number" data-count="15">0</span>
+                <span class="stat-label">秒で完了</span>
+              </div>
+              <div class="stat-badge">
+                <span class="stat-number" data-count="89">0</span>
+                <span class="stat-label">% 継続率</span>
+              </div>
+            </div>
+
+            <!-- CTAボタン -->
+            <div class="cta-wrapper">
+              <a href="#contact-form" class="cta-primary"> 事前登録はこちら </a>
+              <a href="#demo" class="cta-secondary">
+                <div class="play-icon">▶</div>
+                <span>デモを見る</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- スマートフォンモックアップ -->
+          <div class="hero-phone">
+            <div class="phone-mockup">
+              <div class="phone-screen">
+                <div class="screen-content active" id="screen1">
+                  <div class="demo-animation">守</div>
+                  <div class="demo-text">
+                    <h3>15秒エクササイズ</h3>
+                    <p>毎日続けられる健康習慣</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- イントロダクション -->
-    <section
-      id="intro-section"
-      class="intro-section"
-      style="
-        padding: 80px 0;
-        background: linear-gradient(180deg, #f8f7f4 0%, #ffffff 100%);
-      "
-    >
-      <div class="container" style="text-align: center">
-        <h2
-          style="
-            font-size: 2.5rem;
-            color: #2c3e50;
-            margin-bottom: 30px;
-            font-weight: 900;
-          "
-        >
-          社員の健康を、もっと身近に
-        </h2>
-        <p
-          style="
-            font-size: 1.2rem;
-            color: #555;
-            line-height: 1.8;
-            max-width: 800px;
-            margin: 0 auto;
-          "
-        >
-          守くんは、忙しい現代の職場環境でも続けられる健康管理アプリです。<br />
-          わずか15秒のエクササイズで、社員の健康習慣を定着させます。
-        </p>
-      </div>
-    </section>
+      <!-- イントロダクション -->
+      <section
+        id="intro-section"
+        class="intro-section"
+        style="
+          padding: 80px 0;
+          background: linear-gradient(180deg, #f8f7f4 0%, #ffffff 100%);
+        "
+      >
+        <div class="container" style="text-align: center">
+          <h2
+            style="
+              font-size: 2.5rem;
+              color: #2c3e50;
+              margin-bottom: 30px;
+              font-weight: 900;
+            "
+          >
+            社員の健康を、もっと身近に
+          </h2>
+          <p
+            style="
+              font-size: 1.2rem;
+              color: #555;
+              line-height: 1.8;
+              max-width: 800px;
+              margin: 0 auto;
+            "
+          >
+            守くんは、忙しい現代の職場環境でも続けられる健康管理アプリです。<br />
+            わずか15秒のエクササイズで、社員の健康習慣を定着させます。
+          </p>
+        </div>
+      </section>
 
-    <!-- 企業ロゴセクション -->
-    <section id="client-logos" class="client-logos-section">
-      <div class="container">
-        <p class="client-logos-title">導入をご検討いただいている企業様</p>
-        <div class="client-logos-grid">
-          <!-- 実際のロゴに置き換え可能 -->
-          <div class="client-logo">
-            <div class="logo-placeholder">企業ロゴ1</div>
-          </div>
-          <div class="client-logo">
-            <div class="logo-placeholder">企業ロゴ2</div>
-          </div>
-          <div class="client-logo">
-            <div class="logo-placeholder">企業ロゴ3</div>
-          </div>
-          <div class="client-logo">
-            <div class="logo-placeholder">企業ロゴ4</div>
-          </div>
-          <div class="client-logo">
-            <div class="logo-placeholder">企業ロゴ5</div>
-          </div>
-          
-          <!-- 実際のロゴ画像を使用する場合の例: -->
-          <!-- 
+      <!-- 企業ロゴセクション -->
+      <section id="client-logos" class="client-logos-section">
+        <div class="container">
+          <p class="client-logos-title">導入をご検討いただいている企業様</p>
+          <div class="client-logos-grid">
+            <!-- 実際のロゴに置き換え可能 -->
+            <div class="client-logo">
+              <div class="logo-placeholder">企業ロゴ1</div>
+            </div>
+            <div class="client-logo">
+              <div class="logo-placeholder">企業ロゴ2</div>
+            </div>
+            <div class="client-logo">
+              <div class="logo-placeholder">企業ロゴ3</div>
+            </div>
+            <div class="client-logo">
+              <div class="logo-placeholder">企業ロゴ4</div>
+            </div>
+            <div class="client-logo">
+              <div class="logo-placeholder">企業ロゴ5</div>
+            </div>
+
+            <!-- 実際のロゴ画像を使用する場合の例: -->
+            <!-- 
           <div class="client-logo">
             <img src="images/company1-logo.png" alt="会社名1">
           </div>
           <div class="client-logo">
             <img src="images/company2-logo.png" alt="会社名2">
           </div>
-          -->
+          --></div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- 問題提起 -->
-    <section id="problem-section" class="problem">
-      <div class="container">
-        <h2 class="section-title">
-          社員の健康管理、こんな課題を抱えていませんか？
-        </h2>
+      <!-- 問題提起 -->
+      <section id="problem-section" class="problem">
+        <div class="container">
+          <h2 class="section-title">
+            社員の健康管理、こんな課題を抱えていませんか？
+          </h2>
 
-        <div class="problem-grid">
-          <div class="problem-card">
-            <h3>コストが会社の負担に</h3>
-            <p>
-              福利厚生の予算は限られている。<br />
-              一人当たり数万円の健康投資は現実的ではない。
+          <div class="problem-grid">
+            <div class="problem-card">
+              <h3>コストが会社の負担に</h3>
+              <p>
+                福利厚生の予算は限られている。<br />
+                一人当たり数万円の健康投資は現実的ではない。
+              </p>
+            </div>
+
+            <div class="problem-card">
+              <h3>生産性の低下が深刻</h3>
+              <p>
+                腰痛・肩こりによる集中力低下。<br />
+                体調不良による欠勤・早退の増加。<br />
+                医療費の増大が経営を圧迫。
+              </p>
+            </div>
+
+            <div class="problem-card">
+              <h3>既存の対策が機能しない</h3>
+              <p>
+                健康セミナーは一過性で終わる。<br />
+                スポーツジム補助は利用者が限定的。<br />
+                根本的な解決にならない。
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ソリューション -->
+      <section id="solution-section" class="solution">
+        <div class="container">
+          <h2 class="section-title">続けられる3つの仕組み</h2>
+
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-number">①</div>
+              <h3>安い！</h3>
+              <div class="price-highlight">¥500</div>
+              <p>圧倒的な低価格 /1人あたり<br />誰でも始められる料金設定</p>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-number">②</div>
+              <h3>早い！</h3>
+              <div class="price-highlight">15秒</div>
+              <p>わずか15秒でエクササイズ完了<br />ポイントで人事評価UP！</p>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-number">③</div>
+              <h3>飽きない！</h3>
+              <div class="price-highlight">LEVEL UP</div>
+              <p>
+                新しいステージが用意されている<br />ゲーミフィケーション要素で継続
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 実績 -->
+      <section id="results-section" class="results">
+        <div class="container">
+          <h2 class="section-title">導入企業での実績</h2>
+
+          <div class="results-grid">
+            <div class="result-card">
+              <div class="result-numbers">4人→0人</div>
+              <h3>ぎっくり腰</h3>
+              <p>慢性的なぎっくり腰の社員が完全にゼロに</p>
+            </div>
+
+            <div class="result-card">
+              <div class="result-numbers">3人→0人</div>
+              <h3>コルセット使用者</h3>
+              <p>コルセットが必要だった社員も改善</p>
+            </div>
+
+            <div class="result-card">
+              <div class="result-numbers">12年</div>
+              <h3>パーソナル歴</h3>
+              <p>850人の指導実績を持つ専門トレーナー監修</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 料金 -->
+      <section id="pricing-section" class="pricing">
+        <div class="container">
+          <h2 class="section-title">シンプルな料金体系</h2>
+
+          <div class="pricing-card">
+            <div class="price">¥500</div>
+            <div class="price-unit">/ 1人あたり月額</div>
+            <p style="margin-top: 30px; font-size: 1.1rem">
+              サブスクリプション型<br />
+              社員50名の場合：月額25,000円<br />
+              初期費用・解約金なし
             </p>
-          </div>
 
-          <div class="problem-card">
-            <h3>生産性の低下が深刻</h3>
-            <p>
-              腰痛・肩こりによる集中力低下。<br />
-              体調不良による欠勤・早退の増加。<br />
-              医療費の増大が経営を圧迫。
-            </p>
-          </div>
-
-          <div class="problem-card">
-            <h3>既存の対策が機能しない</h3>
-            <p>
-              健康セミナーは一過性で終わる。<br />
-              スポーツジム補助は利用者が限定的。<br />
-              根本的な解決にならない。
-            </p>
+            <a href="#contact-form" class="cta-button" style="margin-top: 30px">
+              事前登録はこちら
+            </a>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- ソリューション -->
-    <section id="solution-section" class="solution">
-      <div class="container">
-        <h2 class="section-title">続けられる3つの仕組み</h2>
-
-        <div class="features-grid">
-          <div class="feature-card">
-            <div class="feature-number">①</div>
-            <h3>安い！</h3>
-            <div class="price-highlight">¥500</div>
-            <p>圧倒的な低価格 /1人あたり<br />誰でも始められる料金設定</p>
-          </div>
-
-          <div class="feature-card">
-            <div class="feature-number">②</div>
-            <h3>早い！</h3>
-            <div class="price-highlight">15秒</div>
-            <p>わずか15秒でエクササイズ完了<br />ポイントで人事評価UP！</p>
-          </div>
-
-          <div class="feature-card">
-            <div class="feature-number">③</div>
-            <h3>飽きない！</h3>
-            <div class="price-highlight">LEVEL UP</div>
-            <p>
-              新しいステージが用意されている<br />ゲーミフィケーション要素で継続
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 実績 -->
-    <section id="results-section" class="results">
-      <div class="container">
-        <h2 class="section-title">導入企業での実績</h2>
-
-        <div class="results-grid">
-          <div class="result-card">
-            <div class="result-numbers">4人→0人</div>
-            <h3>ぎっくり腰</h3>
-            <p>慢性的なぎっくり腰の社員が完全にゼロに</p>
-          </div>
-
-          <div class="result-card">
-            <div class="result-numbers">3人→0人</div>
-            <h3>コルセット使用者</h3>
-            <p>コルセットが必要だった社員も改善</p>
-          </div>
-
-          <div class="result-card">
-            <div class="result-numbers">12年</div>
-            <h3>パーソナル歴</h3>
-            <p>850人の指導実績を持つ専門トレーナー監修</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 料金 -->
-    <section id="pricing-section" class="pricing">
-      <div class="container">
-        <h2 class="section-title">シンプルな料金体系</h2>
-
-        <div class="pricing-card">
-          <div class="price">¥500</div>
-          <div class="price-unit">/ 1人あたり月額</div>
-          <p style="margin-top: 30px; font-size: 1.1rem">
-            サブスクリプション型<br />
-            社員50名の場合：月額25,000円<br />
-            初期費用・解約金なし
+      <!-- お申し込みフォーム -->
+      <section
+        id="contact-form"
+        class="contact-form-section"
+        style="
+          padding: 80px 0;
+          background: linear-gradient(180deg, #f8f7f4 0%, #ffffff 100%);
+        "
+      >
+        <div class="container">
+          <h2 class="section-title">事前登録受付中</h2>
+          <p style="text-align: center; margin-bottom: 20px; color: #666">
+            アプリ完成時に優先的にご案内いたします。
           </p>
-
-          <a
-            href="#contactForm"
-            class="cta-button"
-            style="margin-top: 30px"
-          >
-            事前登録はこちら
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- お申し込みフォーム -->
-    <section
-      id="contact-form"
-      class="contact-form-section"
-      style="
-        padding: 80px 0;
-        background: linear-gradient(180deg, #f8f7f4 0%, #ffffff 100%);
-      "
-    >
-      <div class="container">
-        <h2 class="section-title">事前登録受付中</h2>
-        <p style="text-align: center; margin-bottom: 20px; color: #666">
-          アプリ完成時に優先的にご案内いたします。
-        </p>
-        
-        <div style="background: #f9f7f2; border-left: 4px solid #ff6b35; padding: 20px; margin: 0 auto 40px; max-width: 600px; border-radius: 8px;">
-          <p style="font-weight: bold; color: #333; margin-bottom: 15px; font-size: 1.1rem;">
-            📋 法人様向けの事前登録フォームです
-          </p>
-          <p style="color: #555; line-height: 1.8; margin-bottom: 10px;">
-            <strong>1.</strong> 法人単位での事前登録<br>
-            <strong>2.</strong> アプリ完成後にお試し版をご案内<br>
-            <strong>3.</strong> その後、従業員の方を追加登録
-          </p>
-          <p style="color: #666; font-size: 0.95rem;">
-            ※ 法人をお持ちの個人の方はそのままご登録いただけます<br>
-            ※ 個人でのご利用をご希望の場合は、お問い合わせください
-          </p>
-        </div>
-
-        <form id="contactFormElement" style="max-width: 600px; margin: 0 auto">
-          <div style="margin-bottom: 20px">
-            <label
-              for="company"
-              style="
-                display: block;
-                margin-bottom: 8px;
-                font-weight: bold;
-                color: #333;
-              "
-            >
-              会社名 <span style="color: #ff6b35">*</span>
-            </label>
-            <input
-              type="text"
-              id="company"
-              name="company"
-              required
-              style="
-                width: 100%;
-                padding: 12px;
-                border: 2px solid #ddd;
-                border-radius: 8px;
-                font-size: 16px;
-                transition: border-color 0.3s;
-              "
-              onfocus="this.style.borderColor='#ff6b35'"
-              onblur="this.style.borderColor='#ddd'"
-            />
-          </div>
-
-          <div style="margin-bottom: 20px">
-            <label
-              for="name"
-              style="
-                display: block;
-                margin-bottom: 8px;
-                font-weight: bold;
-                color: #333;
-              "
-            >
-              ご担当者様のお名前 <span style="color: #ff6b35">*</span>
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              required
-              style="
-                width: 100%;
-                padding: 12px;
-                border: 2px solid #ddd;
-                border-radius: 8px;
-                font-size: 16px;
-                transition: border-color 0.3s;
-              "
-              onfocus="this.style.borderColor='#ff6b35'"
-              onblur="this.style.borderColor='#ddd'"
-            />
-          </div>
-
-          <div style="margin-bottom: 20px">
-            <label
-              for="email"
-              style="
-                display: block;
-                margin-bottom: 8px;
-                font-weight: bold;
-                color: #333;
-              "
-            >
-              メールアドレス <span style="color: #ff6b35">*</span>
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              required
-              style="
-                width: 100%;
-                padding: 12px;
-                border: 2px solid #ddd;
-                border-radius: 8px;
-                font-size: 16px;
-                transition: border-color 0.3s;
-              "
-              onfocus="this.style.borderColor='#ff6b35'"
-              onblur="this.style.borderColor='#ddd'"
-            />
-          </div>
-
-          <div style="margin-bottom: 20px">
-            <label
-              for="employees"
-              style="
-                display: block;
-                margin-bottom: 8px;
-                font-weight: bold;
-                color: #333;
-              "
-            >
-              従業員数 <span style="color: #ff6b35">*</span>
-            </label>
-            <select
-              id="employees"
-              name="employees"
-              required
-              style="
-                width: 100%;
-                padding: 12px;
-                border: 2px solid #ddd;
-                border-radius: 8px;
-                font-size: 16px;
-                transition: border-color 0.3s;
-                background: white;
-              "
-              onfocus="this.style.borderColor='#ff6b35'"
-              onblur="this.style.borderColor='#ddd'"
-            >
-              <option value="">選択してください</option>
-              <option value="1-10">1～10名</option>
-              <option value="11-30">11～30名</option>
-              <option value="31-50">31～50名</option>
-              <option value="51-100">51～100名</option>
-              <option value="101-300">101～300名</option>
-              <option value="301+">301名以上</option>
-            </select>
-          </div>
-
-          <div style="margin-bottom: 20px">
-            <label
-              for="phone"
-              style="
-                display: block;
-                margin-bottom: 8px;
-                font-weight: bold;
-                color: #333;
-              "
-            >
-              電話番号
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              style="
-                width: 100%;
-                padding: 12px;
-                border: 2px solid #ddd;
-                border-radius: 8px;
-                font-size: 16px;
-                transition: border-color 0.3s;
-              "
-              onfocus="this.style.borderColor='#ff6b35'"
-              onblur="this.style.borderColor='#ddd'"
-            />
-          </div>
-
-          <div style="margin-bottom: 30px">
-            <label
-              for="message"
-              style="
-                display: block;
-                margin-bottom: 8px;
-                font-weight: bold;
-                color: #333;
-              "
-            >
-              ご質問・ご要望
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              rows="5"
-              style="
-                width: 100%;
-                padding: 12px;
-                border: 2px solid #ddd;
-                border-radius: 8px;
-                font-size: 16px;
-                resize: vertical;
-                transition: border-color 0.3s;
-              "
-              onfocus="this.style.borderColor='#ff6b35'"
-              onblur="this.style.borderColor='#ddd'"
-            ></textarea>
-          </div>
-
-          <button
-            type="submit"
-            class="cta-button"
-            style="width: 100%; border: none; cursor: pointer"
-          >
-            事前登録する
-          </button>
 
           <div
-            id="formMessage"
             style="
-              margin-top: 20px;
-              padding: 15px;
+              background: #f9f7f2;
+              border-left: 4px solid #ff6b35;
+              padding: 20px;
+              margin: 0 auto 40px;
+              max-width: 600px;
               border-radius: 8px;
-              display: none;
-              text-align: center;
             "
-          ></div>
-        </form>
-      </div>
-    </section>
+          >
+            <p
+              style="
+                font-weight: bold;
+                color: #333;
+                margin-bottom: 15px;
+                font-size: 1.1rem;
+              "
+            >
+              📋 法人様向けの事前登録フォームです
+            </p>
+            <p style="color: #555; line-height: 1.8; margin-bottom: 10px">
+              <strong>1.</strong> 法人単位での事前登録<br />
+              <strong>2.</strong> アプリ完成後にお試し版をご案内<br />
+              <strong>3.</strong> その後、従業員の方を追加登録
+            </p>
+            <p style="color: #666; font-size: 0.95rem">
+              ※ 法人をお持ちの個人の方はそのままご登録いただけます<br />
+              ※ 個人でのご利用をご希望の場合は、お問い合わせください
+            </p>
+          </div>
 
-    <!-- Supabase Client -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+          <form
+            id="contactFormElement"
+            style="max-width: 600px; margin: 0 auto"
+          >
+            <div style="margin-bottom: 20px">
+              <label
+                for="company"
+                style="
+                  display: block;
+                  margin-bottom: 8px;
+                  font-weight: bold;
+                  color: #333;
+                "
+              >
+                会社名 <span style="color: #ff6b35">*</span>
+              </label>
+              <input
+                type="text"
+                id="company"
+                name="company"
+                required
+                style="
+                  width: 100%;
+                  padding: 12px;
+                  border: 2px solid #ddd;
+                  border-radius: 8px;
+                  font-size: 16px;
+                  transition: border-color 0.3s;
+                "
+                onfocus="this.style.borderColor='#ff6b35'"
+                onblur="this.style.borderColor='#ddd'"
+              />
+            </div>
 
-    <script>
-      // ========================================
-      // Supabaseの設定
-      // ========================================
-      const SUPABASE_URL = "https://koiaoygefbphwhbwdawk.supabase.co";
-      const SUPABASE_ANON_KEY =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtvaWFveWdlZmJwaHdoYndkYXdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5NzQzMTIsImV4cCI6MjA3MjU1MDMxMn0.u5ysWwErzFVUokjwKzcor1iKrr1zY2C2IVuSbfakWO8"; // eyJ...で始まる長い文字列
+            <div style="margin-bottom: 20px">
+              <label
+                for="name"
+                style="
+                  display: block;
+                  margin-bottom: 8px;
+                  font-weight: bold;
+                  color: #333;
+                "
+              >
+                ご担当者様のお名前 <span style="color: #ff6b35">*</span>
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                style="
+                  width: 100%;
+                  padding: 12px;
+                  border: 2px solid #ddd;
+                  border-radius: 8px;
+                  font-size: 16px;
+                  transition: border-color 0.3s;
+                "
+                onfocus="this.style.borderColor='#ff6b35'"
+                onblur="this.style.borderColor='#ddd'"
+              />
+            </div>
 
-      // Supabaseクライアントを初期化
-      let supabase;
-      if (SUPABASE_URL !== "YOUR_SUPABASE_PROJECT_URL") {
-        supabase = window.supabase.createClient(
-          SUPABASE_URL,
-          SUPABASE_ANON_KEY
-        );
-      }
+            <div style="margin-bottom: 20px">
+              <label
+                for="email"
+                style="
+                  display: block;
+                  margin-bottom: 8px;
+                  font-weight: bold;
+                  color: #333;
+                "
+              >
+                メールアドレス <span style="color: #ff6b35">*</span>
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                style="
+                  width: 100%;
+                  padding: 12px;
+                  border: 2px solid #ddd;
+                  border-radius: 8px;
+                  font-size: 16px;
+                  transition: border-color 0.3s;
+                "
+                onfocus="this.style.borderColor='#ff6b35'"
+                onblur="this.style.borderColor='#ddd'"
+              />
+            </div>
 
-      document
-        .getElementById("contactFormElement")
-        .addEventListener("submit", async function (e) {
-          e.preventDefault();
+            <div style="margin-bottom: 20px">
+              <label
+                for="employees"
+                style="
+                  display: block;
+                  margin-bottom: 8px;
+                  font-weight: bold;
+                  color: #333;
+                "
+              >
+                従業員数 <span style="color: #ff6b35">*</span>
+              </label>
+              <select
+                id="employees"
+                name="employees"
+                required
+                style="
+                  width: 100%;
+                  padding: 12px;
+                  border: 2px solid #ddd;
+                  border-radius: 8px;
+                  font-size: 16px;
+                  transition: border-color 0.3s;
+                  background: white;
+                "
+                onfocus="this.style.borderColor='#ff6b35'"
+                onblur="this.style.borderColor='#ddd'"
+              >
+                <option value="">選択してください</option>
+                <option value="1-10">1～10名</option>
+                <option value="11-30">11～30名</option>
+                <option value="31-50">31～50名</option>
+                <option value="51-100">51～100名</option>
+                <option value="101-300">101～300名</option>
+                <option value="301+">301名以上</option>
+              </select>
+            </div>
 
-          const submitButton = e.target.querySelector('button[type="submit"]');
-          const formMessage = document.getElementById("formMessage");
+            <div style="margin-bottom: 20px">
+              <label
+                for="phone"
+                style="
+                  display: block;
+                  margin-bottom: 8px;
+                  font-weight: bold;
+                  color: #333;
+                "
+              >
+                電話番号
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                style="
+                  width: 100%;
+                  padding: 12px;
+                  border: 2px solid #ddd;
+                  border-radius: 8px;
+                  font-size: 16px;
+                  transition: border-color 0.3s;
+                "
+                onfocus="this.style.borderColor='#ff6b35'"
+                onblur="this.style.borderColor='#ddd'"
+              />
+            </div>
 
-          // ボタンを無効化
-          submitButton.disabled = true;
-          submitButton.textContent = "送信中...";
+            <div style="margin-bottom: 30px">
+              <label
+                for="message"
+                style="
+                  display: block;
+                  margin-bottom: 8px;
+                  font-weight: bold;
+                  color: #333;
+                "
+              >
+                ご質問・ご要望
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                rows="5"
+                style="
+                  width: 100%;
+                  padding: 12px;
+                  border: 2px solid #ddd;
+                  border-radius: 8px;
+                  font-size: 16px;
+                  resize: vertical;
+                  transition: border-color 0.3s;
+                "
+                onfocus="this.style.borderColor='#ff6b35'"
+                onblur="this.style.borderColor='#ddd'"
+              ></textarea>
+            </div>
 
-          // フォームデータを取得
-          const formData = {
-            company: document.getElementById("company").value,
-            name: document.getElementById("name").value,
-            email: document.getElementById("email").value,
-            employees: document.getElementById("employees").value,
-            phone: document.getElementById("phone").value || null,
-            message: document.getElementById("message").value || null,
-            created_at: new Date().toISOString(),
-          };
+            <button
+              type="submit"
+              class="cta-button"
+              style="width: 100%; border: none; cursor: pointer"
+            >
+              事前登録する
+            </button>
 
-          try {
-            if (supabase) {
-              // Supabaseにデータを保存
-              const { data, error } = await supabase
-                .from("contacts")
-                .insert([formData]);
+            <div
+              id="formMessage"
+              style="
+                margin-top: 20px;
+                padding: 15px;
+                border-radius: 8px;
+                display: none;
+                text-align: center;
+              "
+            ></div>
+          </form>
+        </div>
+      </section>
 
-              if (error) throw error;
+      <!-- Supabase Client -->
+      <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-              console.log("データ保存成功:", data);
-            } else {
-              console.log("Supabase未設定のため、フォーム送信をシミュレート");
-              console.log("送信データ:", formData);
+      <script>
+        // ========================================
+        // Supabaseの設定
+        // ========================================
+        const SUPABASE_URL = "https://koiaoygefbphwhbwdawk.supabase.co";
+        const SUPABASE_ANON_KEY =
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtvaWFveWdlZmJwaHdoYndkYXdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5NzQzMTIsImV4cCI6MjA3MjU1MDMxMn0.u5ysWwErzFVUokjwKzcor1iKrr1zY2C2IVuSbfakWO8"; // eyJ...で始まる長い文字列
+
+        // Supabaseクライアントを初期化
+        let supabase;
+        if (SUPABASE_URL !== "YOUR_SUPABASE_PROJECT_URL") {
+          supabase = window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_ANON_KEY
+          );
+        }
+
+        document
+          .getElementById("contactFormElement")
+          .addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const submitButton = e.target.querySelector(
+              'button[type="submit"]'
+            );
+            const formMessage = document.getElementById("formMessage");
+
+            // ボタンを無効化
+            submitButton.disabled = true;
+            submitButton.textContent = "送信中...";
+
+            // フォームデータを取得
+            const formData = {
+              company: document.getElementById("company").value,
+              name: document.getElementById("name").value,
+              email: document.getElementById("email").value,
+              employees: document.getElementById("employees").value,
+              phone: document.getElementById("phone").value || null,
+              message: document.getElementById("message").value || null,
+              created_at: new Date().toISOString(),
+            };
+
+            try {
+              if (supabase) {
+                // Supabaseにデータを保存
+                const { data, error } = await supabase
+                  .from("contacts")
+                  .insert([formData]);
+
+                if (error) throw error;
+
+                console.log("データ保存成功:", data);
+              } else {
+                console.log("Supabase未設定のため、フォーム送信をシミュレート");
+                console.log("送信データ:", formData);
+              }
+
+              // 成功メッセージを表示
+              formMessage.style.display = "block";
+              formMessage.style.backgroundColor = "#d4f1d4";
+              formMessage.style.color = "#2d6a2d";
+              formMessage.innerHTML =
+                "✅ 事前登録ありがとうございます！<br>アプリ完成時に、ご登録のメールアドレスに<br>ダウンロード方法と使い方をご案内いたします。";
+
+              // フォームをリセット
+              e.target.reset();
+            } catch (error) {
+              console.error("エラー:", error);
+              formMessage.style.display = "block";
+              formMessage.style.backgroundColor = "#fdd";
+              formMessage.style.color = "#d00";
+              formMessage.textContent =
+                "送信に失敗しました。お手数ですが、もう一度お試しください。";
+            } finally {
+              // ボタンを有効化
+              submitButton.disabled = false;
+              submitButton.textContent = "無料体験を申し込む";
             }
+          });
+      </script>
 
-            // 成功メッセージを表示
-            formMessage.style.display = "block";
-            formMessage.style.backgroundColor = "#d4f1d4";
-            formMessage.style.color = "#2d6a2d";
-            formMessage.innerHTML =
-              "✅ 事前登録ありがとうございます！<br>アプリ完成時に、ご登録のメールアドレスに<br>ダウンロード方法と使い方をご案内いたします。";
+      <!-- 会社情報 -->
+      <section id="company-section" class="company">
+        <div class="container">
+          <h2 class="section-title">開発者について</h2>
 
-            // フォームをリセット
-            e.target.reset();
-          } catch (error) {
-            console.error("エラー:", error);
-            formMessage.style.display = "block";
-            formMessage.style.backgroundColor = "#fdd";
-            formMessage.style.color = "#d00";
-            formMessage.textContent =
-              "送信に失敗しました。お手数ですが、もう一度お試しください。";
-          } finally {
-            // ボタンを有効化
-            submitButton.disabled = false;
-            submitButton.textContent = "無料体験を申し込む";
-          }
-        });
-    </script>
+          <div class="company-info">
+            <div class="company-text">
+              <h3>山入端嘉朗 42歳</h3>
+              <p><strong>経歴：</strong></p>
+              <p>• アウトドアガイド（30歳）</p>
+              <p>• パーソナルトレーニングジム（31歳）</p>
+              <p><strong>実績：</strong></p>
+              <p>• プロハンドボール 琉球コラソン トレーナー</p>
+              <p>• パーソナル歴12年（850人指導）</p>
+              <p><strong>会社：</strong></p>
+              <p>合同会社 近代ゴリラ（2021年設立）</p>
+            </div>
 
-    <!-- 会社情報 -->
-    <section id="company-section" class="company">
-      <div class="container">
-        <h2 class="section-title">開発者について</h2>
-
-        <div class="company-info">
-          <div class="company-text">
-            <h3>山入端嘉朗 42歳</h3>
-            <p><strong>経歴：</strong></p>
-            <p>• アウトドアガイド（30歳）</p>
-            <p>• パーソナルトレーニングジム（31歳）</p>
-            <p><strong>実績：</strong></p>
-            <p>• プロハンドボール 琉球コラソン トレーナー</p>
-            <p>• パーソナル歴12年（850人指導）</p>
-            <p><strong>会社：</strong></p>
-            <p>合同会社 近代ゴリラ（2021年設立）</p>
-          </div>
-
-          <div class="founder-image">
-            <img
-              src="images/yamairiba-profile.png"
-              alt="山入端嘉朗"
-              style="width: 100%; max-width: 400px; border-radius: 15px"
-            />
+            <div class="founder-image">
+              <img
+                src="images/yamairiba-profile.png"
+                alt="山入端嘉朗"
+                style="width: 100%; max-width: 400px; border-radius: 15px"
+              />
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- フッター -->
-    <footer class="footer">
-      <div class="container">
-        <div class="vision-footer">
-          社員を元氣に！<br />
-          企業を元氣に！<br />
-          日本を元氣に！
+      <!-- フッター -->
+      <footer class="footer">
+        <div class="container">
+          <div class="vision-footer">
+            社員を元氣に！<br />
+            企業を元氣に！<br />
+            日本を元氣に！
+          </div>
+
+          <a href="#contact-form" class="cta-button"> 今すぐお問い合わせ </a>
+
+          <p style="margin-top: 40px; opacity: 0.7">
+            © 2025 合同会社近代ゴリラ. All rights reserved.
+          </p>
         </div>
-
-        <a
-          href="#contactForm"
-          class="cta-button"
-        >
-          今すぐお問い合わせ
-        </a>
-
-        <p style="margin-top: 40px; opacity: 0.7">
-          © 2025 合同会社近代ゴリラ. All rights reserved.
-        </p>
-      </div>
-    </footer>
-    
-    </div> <!-- main-content 終了 -->
+      </footer>
+    </div>
+    <!-- main-content 終了 -->
 
     <script>
       // ハンバーガーメニューの制御
       const hamburgerMenu = document.getElementById("hamburgerMenu");
       const menuPanel = document.getElementById("menuPanel");
       const menuOverlay = document.getElementById("menuOverlay");
-      
+
       function toggleMenu() {
         hamburgerMenu.classList.toggle("active");
         menuPanel.classList.toggle("active");
         menuOverlay.classList.toggle("active");
       }
-      
+
       hamburgerMenu.addEventListener("click", toggleMenu);
       menuOverlay.addEventListener("click", toggleMenu);
-      
+
       // メニューリンクをクリックしたら閉じる
       const menuLinks = menuPanel.querySelectorAll("a");
-      menuLinks.forEach(link => {
+      menuLinks.forEach((link) => {
         if (!link.classList.contains("admin-login-btn")) {
           link.addEventListener("click", toggleMenu);
         }
