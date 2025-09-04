@@ -999,6 +999,146 @@
         </div>
     </section>
 
+    <!-- お申し込みフォーム -->
+    <section class="contact-form-section" style="padding: 80px 0; background: linear-gradient(180deg, #f8f7f4 0%, #ffffff 100%);">
+        <div class="container">
+            <h2 class="section-title">無料体験のお申し込み</h2>
+            <p style="text-align: center; margin-bottom: 40px; color: #666;">
+                まずは無料体験から。お気軽にお申し込みください。
+            </p>
+            
+            <form id="contactForm" style="max-width: 600px; margin: 0 auto;">
+                <div style="margin-bottom: 20px;">
+                    <label for="company" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                        会社名 <span style="color: #ff6b35;">*</span>
+                    </label>
+                    <input type="text" id="company" name="company" required
+                           style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; transition: border-color 0.3s;"
+                           onfocus="this.style.borderColor='#ff6b35'" onblur="this.style.borderColor='#ddd'">
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label for="name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                        お名前 <span style="color: #ff6b35;">*</span>
+                    </label>
+                    <input type="text" id="name" name="name" required
+                           style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; transition: border-color 0.3s;"
+                           onfocus="this.style.borderColor='#ff6b35'" onblur="this.style.borderColor='#ddd'">
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label for="email" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                        メールアドレス <span style="color: #ff6b35;">*</span>
+                    </label>
+                    <input type="email" id="email" name="email" required
+                           style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; transition: border-color 0.3s;"
+                           onfocus="this.style.borderColor='#ff6b35'" onblur="this.style.borderColor='#ddd'">
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label for="phone" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                        電話番号
+                    </label>
+                    <input type="tel" id="phone" name="phone"
+                           style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; transition: border-color 0.3s;"
+                           onfocus="this.style.borderColor='#ff6b35'" onblur="this.style.borderColor='#ddd'">
+                </div>
+                
+                <div style="margin-bottom: 30px;">
+                    <label for="message" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                        ご質問・ご要望
+                    </label>
+                    <textarea id="message" name="message" rows="5"
+                              style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; resize: vertical; transition: border-color 0.3s;"
+                              onfocus="this.style.borderColor='#ff6b35'" onblur="this.style.borderColor='#ddd'"></textarea>
+                </div>
+                
+                <button type="submit" class="cta-button" style="width: 100%; border: none; cursor: pointer;">
+                    無料体験を申し込む
+                </button>
+                
+                <div id="formMessage" style="margin-top: 20px; padding: 15px; border-radius: 8px; display: none; text-align: center;"></div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script>
+        // ========================================
+        // Supabaseの設定
+        // ========================================
+        // 1. https://supabase.com でアカウント作成
+        // 2. 新規プロジェクト作成
+        // 3. Settings → API から以下の情報を取得：
+        const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL'; // 例: https://xxxxx.supabase.co
+        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY'; // 例: eyJhbGciOiJI...
+        
+        // Supabaseクライアントを初期化
+        let supabase;
+        if (SUPABASE_URL !== 'YOUR_SUPABASE_PROJECT_URL') {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        }
+        
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            const formMessage = document.getElementById('formMessage');
+            
+            // ボタンを無効化
+            submitButton.disabled = true;
+            submitButton.textContent = '送信中...';
+            
+            // フォームデータを取得
+            const formData = {
+                company: document.getElementById('company').value,
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value || null,
+                message: document.getElementById('message').value || null,
+                created_at: new Date().toISOString()
+            };
+            
+            try {
+                if (supabase) {
+                    // Supabaseにデータを保存
+                    const { data, error } = await supabase
+                        .from('contacts')
+                        .insert([formData]);
+                    
+                    if (error) throw error;
+                    
+                    console.log('データ保存成功:', data);
+                } else {
+                    console.log('Supabase未設定のため、フォーム送信をシミュレート');
+                    console.log('送信データ:', formData);
+                }
+                
+                // 成功メッセージを表示
+                formMessage.style.display = 'block';
+                formMessage.style.backgroundColor = '#d4f1d4';
+                formMessage.style.color = '#2d6a2d';
+                formMessage.innerHTML = '✅ お申し込みありがとうございます！<br>担当者よりご連絡させていただきます。';
+                
+                // フォームをリセット
+                e.target.reset();
+                
+            } catch (error) {
+                console.error('エラー:', error);
+                formMessage.style.display = 'block';
+                formMessage.style.backgroundColor = '#fdd';
+                formMessage.style.color = '#d00';
+                formMessage.textContent = '送信に失敗しました。お手数ですが、もう一度お試しください。';
+            } finally {
+                // ボタンを有効化
+                submitButton.disabled = false;
+                submitButton.textContent = '無料体験を申し込む';
+            }
+        });
+    </script>
+
     <!-- 会社情報 -->
     <section class="company">
         <div class="container">
