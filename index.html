@@ -903,9 +903,8 @@
           <!-- CTAボタン -->
           <div class="cta-wrapper">
             <a
-              href="#contact"
+              href="#contactForm"
               class="cta-primary"
-              onclick="window.open('https://forms.google.com/', '_blank')"
             >
               無料体験を始める
             </a>
@@ -1071,10 +1070,9 @@
           </p>
 
           <a
-            href="#"
+            href="#contactForm"
             class="cta-button"
             style="margin-top: 30px"
-            onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSe0uVY4hKiEz8klugWsiatD7cHI6ox4Km7gjGtIGedh5HPS7Q/viewform', '_blank')"
           >
             無料体験お申し込み
           </a>
@@ -1084,6 +1082,7 @@
 
     <!-- お申し込みフォーム -->
     <section
+      id="contactForm"
       class="contact-form-section"
       style="
         padding: 80px 0;
@@ -1096,7 +1095,7 @@
           まずは無料体験から。お気軽にお申し込みください。
         </p>
 
-        <form id="contactForm" style="max-width: 600px; margin: 0 auto">
+        <form id="contactFormElement" style="max-width: 600px; margin: 0 auto">
           <div style="margin-bottom: 20px">
             <label
               for="company"
@@ -1289,7 +1288,7 @@
       }
 
       document
-        .getElementById("contactForm")
+        .getElementById("contactFormElement")
         .addEventListener("submit", async function (e) {
           e.preventDefault();
 
@@ -1388,9 +1387,8 @@
         </div>
 
         <a
-          href="#"
+          href="#contactForm"
           class="cta-button"
-          onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSe0uVY4hKiEz8klugWsiatD7cHI6ox4Km7gjGtIGedh5HPS7Q/viewform', '_blank')"
         >
           今すぐお問い合わせ
         </a>
