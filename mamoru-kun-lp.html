@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="守くん - 月額500円で始める社員健康管理アプリ。15秒のエクササイズで社員の健康を守ります。">
+    <title>守くん - 月額500円の社員健康管理アプリ | 15秒で健康習慣</title>
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-color: #e5ce4b;
+            --primary-light: #f4e59d;
+            --primary-lighter: #f9f2c7;
+            --primary-lightest: #fdfaeb;
+            --primary-dark: #d4b738;
+            --primary-darker: #c5a82c;
+            --accent-color: #f4e59d;
+            --success-color: #89c34a;
+            --info-color: #4a90e2;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --gold-gradient: linear-gradient(135deg, #e5ce4b 0%, #d4b738 100%);
+            --gold-gradient-light: linear-gradient(135deg, #f9f2c7 0%, #f4e59d 100%);
+        }
+        
+        body {
+            font-family: 'Noto Sans JP', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* ローディング画面 */
+        .loader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+        
+        .loader-wrapper.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 新しいヒーローセクション */
+        .hero-section {
+            position: relative;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f9f2c7 0%, #f4e59d 30%, #e5ce4b 70%, #d4b738 100%);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* アニメーション背景 */
+        .hero-bg-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .floating-shape {
+            position: absolute;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(5px);
+            animation: float 20s infinite ease-in-out;
+        }
+        
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            top: -150px;
+            right: -150px;
+            animation-delay: 0s;
+        }
+        
+        .shape-2 {
+            width: 200px;
+            height: 200px;
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            bottom: -100px;
+            left: -100px;
+            animation-delay: 3s;
+        }
+        
+        .shape-3 {
+            width: 250px;
+            height: 250px;
+            border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%;
+            top: 50%;
+            right: 10%;
+            animation-delay: 6s;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            33% {
+                transform: translate(30px, -30px) rotate(120deg);
+            }
+            66% {
+                transform: translate(-20px, 20px) rotate(240deg);
+            }
+        }
+        
+        /* パーティクルエフェクト */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(255,255,255,0.5);
+            border-radius: 50%;
+            animation: particle-float 15s infinite linear;
+        }
+        
+        @keyframes particle-float {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) scale(1);
+                opacity: 0;
+            }
+        }
+        
+        /* ヒーローコンテンツ */
+        .hero-container {
+            position: relative;
+            z-index: 10;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+        
+        .hero-text {
+            animation: fadeInLeft 1s ease-out;
+        }
+        
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .hero-text h1 {
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 900;
+            color: white;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .hero-text h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.8), transparent);
+            animation: lineExpand 1.5s ease-out 0.5s both;
+        }
+        
+        @keyframes lineExpand {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+        
+        .typing-text {
+            font-size: 1.5rem;
+            color: rgba(255,255,255,0.95);
+            margin-bottom: 30px;
+            min-height: 2em;
+        }
+        
+        .typing-text span {
+            border-right: 3px solid white;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+        
+        /* 統計バッジ */
+        .stats-badges {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-badge {
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--primary-darker);
+            padding: 15px 25px;
+            border-radius: 50px;
+            color: var(--dark-color);
+            animation: fadeInUp 1s ease-out;
+            animation-fill-mode: both;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .stat-badge:nth-child(1) { animation-delay: 0.8s; }
+        .stat-badge:nth-child(2) { animation-delay: 1s; }
+        .stat-badge:nth-child(3) { animation-delay: 1.2s; }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-darker);
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--dark-color);
+            opacity: 0.8;
+        }
+        
+        /* CTA ボタン */
+        .cta-wrapper {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .cta-primary {
+            display: inline-block;
+            background: linear-gradient(135deg, #89c34a, #7ab83f);
+            color: white;
+            padding: 20px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 50px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(137, 195, 74, 0.3);
+        }
+        
+        .cta-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+        
+        .cta-primary:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .cta-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(137, 195, 74, 0.4);
+            background: linear-gradient(135deg, #7ab83f, #6ba635);
+        }
+        
+        .cta-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: gap 0.3s ease;
+        }
+        
+        .cta-secondary:hover {
+            gap: 15px;
+        }
+        
+        .play-icon {
+            width: 50px;
+            height: 50px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(255,255,255,0.4);
+            }
+            50% {
+                box-shadow: 0 0 0 20px rgba(255,255,255,0);
+            }
+        }
+        
+        /* スマートフォンモックアップ */
+        .hero-phone {
+            position: relative;
+            animation: fadeInRight 1s ease-out;
+            perspective: 1000px;
+        }
+        
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .phone-mockup {
+            width: 320px;
+            height: 640px;
+            background: linear-gradient(145deg, #1a1a2e, #16213e);
+            border-radius: 35px;
+            padding: 10px;
+            box-shadow: 
+                0 50px 100px rgba(0,0,0,0.5),
+                inset 0 2px 3px rgba(255,255,255,0.1);
+            position: relative;
+            transform: rotateY(-10deg) rotateX(5deg);
+            transform-style: preserve-3d;
+            animation: phoneFloat 6s ease-in-out infinite;
+        }
+        
+        @keyframes phoneFloat {
+            0%, 100% {
+                transform: rotateY(-10deg) rotateX(5deg) translateY(0);
+            }
+            50% {
+                transform: rotateY(-10deg) rotateX(5deg) translateY(-20px);
+            }
+        }
+        
+        .phone-mockup::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 5px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+        }
+        
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* スクリーンコンテンツアニメーション */
+        .screen-content {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.5s ease;
+        }
+        
+        .screen-content.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .demo-animation {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, #ff8c42, #ff6b1a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            font-weight: bold;
+            animation: demoRotate 3s linear infinite;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(255, 140, 66, 0.4);
+        }
+        
+        @keyframes demoRotate {
+            from { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            to { transform: rotate(360deg) scale(1); }
+        }
+        
+        .demo-text {
+            text-align: center;
+            color: var(--dark-color);
+        }
+        
+        .demo-text h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .demo-text p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* 既存のセクションスタイル */
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            color: #2c3e50;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #e5ce4b, #d4b738);
+            border-radius: 2px;
+            box-shadow: 0 2px 10px rgba(229, 206, 75, 0.3);
+        }
+        
+        .problem {
+            padding: 80px 0;
+            background: #f8f9fa;
+        }
+        
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+        }
+        
+        .problem-card {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .problem-card h3 {
+            font-size: 1.8rem;
+            color: #e74c3c;
+            margin-bottom: 20px;
+        }
+        
+        .problem-card p {
+            font-size: 1.1rem;
+            color: #666;
+        }
+        
+        .solution {
+            padding: 80px 0;
+            background: white;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, var(--primary-lighter), var(--primary-light));
+            color: var(--dark-color);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            box-shadow: 0 10px 30px rgba(229, 206, 75, 0.2);
+            border: 2px solid var(--primary-color);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-number {
+            background: var(--primary-color);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0 auto 20px;
+            box-shadow: 0 4px 10px rgba(229, 206, 75, 0.4);
+        }
+        
+        .feature-card h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        
+        .feature-card p {
+            font-size: 1.1rem;
+            color: var(--dark-color);
+            opacity: 0.85;
+        }
+        
+        .price-highlight {
+            background: linear-gradient(135deg, #89c34a, #7ab83f);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 2.5rem;
+            font-weight: bold;
+            display: inline-block;
+            margin: 20px 0;
+            box-shadow: 0 5px 20px rgba(137, 195, 74, 0.3);
+        }
+        
+        .results {
+            padding: 80px 0;
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+        }
+        
+        .results .section-title {
+            color: white;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+        
+        .result-card {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+        }
+        
+        .result-numbers {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #e5ce4b;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(229, 206, 75, 0.3);
+        }
+        
+        .pricing {
+            padding: 80px 0;
+            background: #f8f9fa;
+            text-align: center;
+        }
+        
+        .pricing-card {
+            background: white;
+            padding: 60px 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .pricing-card .price {
+            font-size: 4rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #e5ce4b, #d4b738);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+        
+        .pricing-card .price-unit {
+            font-size: 1.2rem;
+            color: #666;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #e5ce4b, #d4b738);
+            color: white;
+            padding: 20px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(229, 206, 75, 0.3);
+        }
+        
+        .cta-button:hover {
+            background: linear-gradient(135deg, #d4b738, #c5a82c);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(229, 206, 75, 0.4);
+        }
+        
+        .company {
+            padding: 80px 0;
+            background: white;
+        }
+        
+        .company-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .company-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .company-text p {
+            margin-bottom: 15px;
+        }
+        
+        .founder-image {
+            text-align: center;
+        }
+        
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 60px 0;
+        }
+        
+        .footer .vision-footer {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+        
+        /* レスポンシブデザイン */
+        @media (max-width: 1024px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding: 40px 20px;
+            }
+            
+            .hero-text {
+                margin-bottom: 40px;
+            }
+            
+            .hero-text h1::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .stats-badges {
+                justify-content: center;
+            }
+            
+            .cta-wrapper {
+                justify-content: center;
+            }
+            
+            .hero-phone {
+                display: flex;
+                justify-content: center;
+            }
+            
+            .company-info {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .problem-grid, 
+            .features-grid, 
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+            
+            .typing-text {
+                font-size: 1.1rem;
+            }
+            
+            .stat-badge {
+                padding: 10px 20px;
+            }
+            
+            .stat-number {
+                font-size: 1.5rem;
+            }
+            
+            .phone-mockup {
+                width: 280px;
+                height: 560px;
+            }
+            
+            .cta-primary {
+                padding: 15px 30px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ローディング画面 -->
+    <div class="loader-wrapper" id="loader">
+        <div class="loader"></div>
+    </div>
+    
+    <!-- ヒーローセクション -->
+    <section class="hero-section">
+        <!-- アニメーション背景 -->
+        <div class="hero-bg-animation">
+            <div class="floating-shape shape-1"></div>
+            <div class="floating-shape shape-2"></div>
+            <div class="floating-shape shape-3"></div>
+        </div>
+        
+        <!-- パーティクル -->
+        <div class="particles" id="particles"></div>
+        
+        <div class="hero-container">
+            <div class="hero-text">
+                <h1>守くん</h1>
+                <div class="typing-text">
+                    <span id="typing"></span>
+                </div>
+                
+                <!-- 統計バッジ -->
+                <div class="stats-badges">
+                    <div class="stat-badge">
+                        <span class="stat-number" data-count="500">0</span>
+                        <span class="stat-label">円/月</span>
+                    </div>
+                    <div class="stat-badge">
+                        <span class="stat-number" data-count="15">0</span>
+                        <span class="stat-label">秒で完了</span>
+                    </div>
+                    <div class="stat-badge">
+                        <span class="stat-number" data-count="89">0</span>
+                        <span class="stat-label">% 継続率</span>
+                    </div>
+                </div>
+                
+                <!-- CTAボタン -->
+                <div class="cta-wrapper">
+                    <a href="#contact" class="cta-primary" onclick="window.open('https://forms.google.com/', '_blank')">
+                        無料体験を始める
+                    </a>
+                    <a href="#demo" class="cta-secondary">
+                        <div class="play-icon">▶</div>
+                        <span>デモを見る</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- スマートフォンモックアップ -->
+            <div class="hero-phone">
+                <div class="phone-mockup">
+                    <div class="phone-screen">
+                        <div class="screen-content active" id="screen1">
+                            <div class="demo-animation">守</div>
+                            <div class="demo-text">
+                                <h3>15秒エクササイズ</h3>
+                                <p>毎日続けられる健康習慣</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 問題提起 -->
+    <section class="problem">
+        <div class="container">
+            <h2 class="section-title">パーソナルトレーニングにどんなイメージをお持ちですか？</h2>
+            
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <h3>金額が高い！</h3>
+                    <p>優越感から違和感へ。<br>高額なパーソナルトレーニングでは継続が困難です。</p>
+                </div>
+                
+                <div class="problem-card">
+                    <h3>現場マネージャーの深刻な悩み</h3>
+                    <p>20代で慢性腰痛を抱えている。<br>健康な人が1人もいない現実。</p>
+                </div>
+                
+                <div class="problem-card">
+                    <h3>自己管理っ！では全く効果はない</h3>
+                    <p>世の中が良くなっているという実感がなかった。<br>根本的な解決策が必要です。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ソリューション -->
+    <section class="solution">
+        <div class="container">
+            <h2 class="section-title">続けられる3つの仕組み</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-number">①</div>
+                    <h3>安い！</h3>
+                    <div class="price-highlight">¥500</div>
+                    <p>圧倒的な低価格 /1人あたり<br>誰でも始められる料金設定</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-number">②</div>
+                    <h3>早い！</h3>
+                    <div class="price-highlight">15秒</div>
+                    <p>わずか15秒でエクササイズ完了<br>ポイントで人事評価UP！</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-number">③</div>
+                    <h3>飽きない！</h3>
+                    <div class="price-highlight">LEVEL UP</div>
+                    <p>新しいステージが用意されている<br>ゲーミフィケーション要素で継続</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 実績 -->
+    <section class="results">
+        <div class="container">
+            <h2 class="section-title">導入企業での実績</h2>
+            
+            <div class="results-grid">
+                <div class="result-card">
+                    <div class="result-numbers">4人→0人</div>
+                    <h3>ぎっくり腰</h3>
+                    <p>慢性的なぎっくり腰の社員が完全にゼロに</p>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-numbers">3人→0人</div>
+                    <h3>コルセット使用者</h3>
+                    <p>コルセットが必要だった社員も改善</p>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-numbers">12年</div>
+                    <h3>パーソナル歴</h3>
+                    <p>850人の指導実績を持つ専門トレーナー監修</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 料金 -->
+    <section class="pricing">
+        <div class="container">
+            <h2 class="section-title">シンプルな料金体系</h2>
+            
+            <div class="pricing-card">
+                <div class="price">¥500</div>
+                <div class="price-unit">/ 1人あたり月額</div>
+                <p style="margin-top: 30px; font-size: 1.1rem;">
+                    サブスクリプション型<br>
+                    社員50名の場合：月額25,000円<br>
+                    初期費用・解約金なし
+                </p>
+                
+                <a href="#" class="cta-button" style="margin-top: 30px;" onclick="window.open('https://forms.google.com/', '_blank')">
+                    無料体験お申し込み
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 会社情報 -->
+    <section class="company">
+        <div class="container">
+            <h2 class="section-title">開発者について</h2>
+            
+            <div class="company-info">
+                <div class="company-text">
+                    <h3>山入端嘉朗 42歳</h3>
+                    <p><strong>経歴：</strong></p>
+                    <p>• アウトドアガイド（30歳）</p>
+                    <p>• パーソナルトレーニングジム（31歳）</p>
+                    <p><strong>実績：</strong></p>
+                    <p>• プロハンドボール 琉球コラソン トレーナー</p>
+                    <p>• パーソナル歴12年（850人指導）</p>
+                    <p><strong>会社：</strong></p>
+                    <p>合同会社 近代ゴリラ（2021年設立）</p>
+                </div>
+                
+                <div class="founder-image">
+                    <img src="images/yamairiba-profile.png" alt="山入端嘉朗" style="width: 100%; max-width: 400px; border-radius: 15px;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- フッター -->
+    <footer class="footer">
+        <div class="container">
+            <div class="vision-footer">
+                社員を元氣に！<br>
+                企業を元氣に！<br>
+                日本を元氣に！
+            </div>
+            
+            <a href="#" class="cta-button" onclick="window.open('https://forms.google.com/', '_blank')">
+                今すぐお問い合わせ
+            </a>
+            
+            <p style="margin-top: 40px; opacity: 0.7;">
+                © 2025 合同会社近代ゴリラ. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // ローダー非表示
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('fade-out');
+            }, 500);
+        });
+        
+        // パーティクル生成
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.width = Math.random() * 5 + 2 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = Math.random() * 10 + 10 + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+        createParticles();
+        
+        // タイピングアニメーション
+        const texts = [
+            '月額500円で始める社員の健康習慣',
+            '15秒で完了する簡単エクササイズ',
+            '継続率89%の実績',
+            '社員の健康を大切に想う社長と考えたアプリ'
+        ];
+        let textIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typingElement = document.getElementById('typing');
+        
+        function typeText() {
+            const currentText = texts[textIndex];
+            
+            if (!isDeleting) {
+                typingElement.textContent = currentText.slice(0, charIndex++);
+                
+                if (charIndex > currentText.length) {
+                    isDeleting = true;
+                    setTimeout(typeText, 2000);
+                    return;
+                }
+            } else {
+                typingElement.textContent = currentText.slice(0, charIndex--);
+                
+                if (charIndex === 0) {
+                    isDeleting = false;
+                    textIndex = (textIndex + 1) % texts.length;
+                }
+            }
+            
+            setTimeout(typeText, isDeleting ? 50 : 100);
+        }
+        typeText();
+        
+        // カウントアップアニメーション
+        function countUp() {
+            const counters = document.querySelectorAll('.stat-number');
+            
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-count'));
+                const increment = target / 50;
+                let current = 0;
+                
+                const updateCounter = () => {
+                    current += increment;
+                    if (current < target) {
+                        counter.textContent = Math.floor(current);
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.textContent = target;
+                    }
+                };
+                
+                // Intersection Observerで表示時にアニメーション開始
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            updateCounter();
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                });
+                
+                observer.observe(counter);
+            });
+        }
+        countUp();
+        
+        // スクリーンコンテンツの自動切り替え
+        const screens = [
+            {
+                icon: '守',
+                title: '15秒エクササイズ',
+                desc: '毎日続けられる健康習慣'
+            },
+            {
+                icon: '💪',
+                title: 'レベルアップシステム',
+                desc: 'ゲーム感覚で楽しく継続'
+            },
+            {
+                icon: '📊',
+                title: '健康管理ダッシュボード',
+                desc: '社員の健康状態を見える化'
+            }
+        ];
+        
+        let currentScreen = 0;
+        setInterval(() => {
+            currentScreen = (currentScreen + 1) % screens.length;
+            const screenContent = document.querySelector('.screen-content');
+            screenContent.classList.remove('active');
+            
+            setTimeout(() => {
+                const screen = screens[currentScreen];
+                screenContent.innerHTML = `
+                    <div class="demo-animation">${screen.icon}</div>
+                    <div class="demo-text">
+                        <h3>${screen.title}</h3>
+                        <p>${screen.desc}</p>
+                    </div>
+                `;
+                screenContent.classList.add('active');
+            }, 500);
+        }, 4000);
+    </script>
+</body>
+</html>
