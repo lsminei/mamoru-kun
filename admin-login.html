@@ -152,6 +152,8 @@
         </form>
 
         <div class="back-link">
+            <a href="#" onclick="resetPassword(); return false;">パスワードを忘れた方</a>
+            <br><br>
             <a href="index.html">← トップページに戻る</a>
         </div>
     </div>
@@ -210,6 +212,32 @@
                 submitBtn.textContent = 'ログイン';
             }
         });
+        
+        // パスワードリセット機能
+        async function resetPassword() {
+            const email = prompt('パスワードリセット用のメールアドレスを入力してください:');
+            
+            if (!email) return;
+            
+            const messageDiv = document.getElementById('message');
+            
+            try {
+                const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+                    redirectTo: window.location.origin + '/admin-login.html',
+                });
+                
+                if (error) throw error;
+                
+                messageDiv.className = 'message success';
+                messageDiv.textContent = 'パスワードリセットメールを送信しました。メールを確認してください。';
+                messageDiv.style.display = 'block';
+                
+            } catch (error) {
+                messageDiv.className = 'message error';
+                messageDiv.textContent = 'パスワードリセットに失敗しました。メールアドレスを確認してください。';
+                messageDiv.style.display = 'block';
+            }
+        }
         
         // 既にログインしている場合は管理画面へ
         supabase.auth.getSession().then(({ data: { session } }) => {
