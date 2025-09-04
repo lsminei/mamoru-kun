@@ -888,6 +888,56 @@
         border: 2px dashed #ddd;
       }
 
+      /* カスタムセレクトボックススタイル */
+      select {
+        /* iOS Safari用の設定 */
+        -webkit-appearance: none;
+        /* Android Chrome用の設定 */
+        -moz-appearance: none;
+        appearance: none;
+        /* iOSでのズーム防止 */
+        font-size: 16px !important;
+      }
+      
+      /* セレクトボックスのフォーカス時のスタイル */
+      select:focus {
+        outline: none;
+        border-color: #ff6b35 !important;
+        box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+      }
+      
+      /* iOS特有の角丸を削除 */
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"],
+      textarea,
+      select {
+        -webkit-border-radius: 8px;
+        border-radius: 8px;
+      }
+      
+      /* モバイルでの入力要素の共通スタイル */
+      @media (max-width: 768px) {
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea,
+        select {
+          font-size: 16px !important; /* iOSのズーム防止 */
+          -webkit-appearance: none;
+          -webkit-border-radius: 8px;
+          padding: 14px !important;
+          line-height: 1.5;
+        }
+        
+        select {
+          background-color: white !important;
+          cursor: pointer;
+          /* タッチしやすいように最小高さを設定 */
+          min-height: 48px;
+        }
+      }
+
       @media (max-width: 768px) {
         .problem-grid,
         .features-grid,
@@ -1545,6 +1595,14 @@
                   font-size: 16px;
                   transition: border-color 0.3s;
                   background: white;
+                  background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2214%22 height=%228%22 viewBox=%220 0 14 8%22%3e%3cpath fill=%22%23333%22 d=%22M7 8L0 0h14z%22/%3e%3c/svg%3e');
+                  background-repeat: no-repeat;
+                  background-position: right 12px center;
+                  background-size: 12px;
+                  -webkit-appearance: none;
+                  -moz-appearance: none;
+                  appearance: none;
+                  padding-right: 40px;
                 "
                 onfocus="this.style.borderColor='#ff6b35'"
                 onblur="this.style.borderColor='#ddd'"
