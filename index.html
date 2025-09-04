@@ -830,6 +830,112 @@
         }
       }
 
+      /* ハンバーガーメニュー */
+      .hamburger-menu {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
+        z-index: 10000;
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 8px;
+      }
+
+      .hamburger-menu span {
+        display: block;
+        width: 25px;
+        height: 3px;
+        background: #333;
+        margin: 3px 0;
+        transition: all 0.3s ease;
+        border-radius: 2px;
+      }
+
+      .hamburger-menu.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+      }
+
+      .hamburger-menu.active span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .hamburger-menu.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -6px);
+      }
+
+      /* メニューパネル */
+      .menu-panel {
+        position: fixed;
+        top: 0;
+        right: -300px;
+        width: 300px;
+        height: 100vh;
+        background: white;
+        box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+        transition: right 0.3s ease;
+        z-index: 9999;
+        padding: 80px 30px 30px;
+      }
+
+      .menu-panel.active {
+        right: 0;
+      }
+
+      .menu-panel a {
+        display: block;
+        padding: 15px 20px;
+        color: #333;
+        text-decoration: none;
+        font-size: 1.1rem;
+        border-bottom: 1px solid #eee;
+        transition: all 0.3s ease;
+      }
+
+      .menu-panel a:hover {
+        background: #f8f8f8;
+        padding-left: 30px;
+      }
+
+      .admin-login-btn {
+        background: linear-gradient(135deg, #ff6b35, #ff5722);
+        color: white !important;
+        border-radius: 8px;
+        text-align: center;
+        font-weight: bold;
+        margin-top: 20px;
+      }
+
+      .admin-login-btn:hover {
+        background: linear-gradient(135deg, #ff5722, #e64a19);
+      }
+
+      /* オーバーレイ */
+      .menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 9998;
+      }
+
+      .menu-overlay.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
       @media (max-width: 480px) {
         .hero-text h1 {
           font-size: 2.5rem;
@@ -860,6 +966,29 @@
     </style>
   </head>
   <body>
+    <!-- ハンバーガーメニュー -->
+    <div class="hamburger-menu" id="hamburgerMenu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- メニューパネル -->
+    <div class="menu-panel" id="menuPanel">
+      <a href="#contactForm">事前登録</a>
+      <a href="#problem-section">課題</a>
+      <a href="#solution-section">解決策</a>
+      <a href="#results-section">実績</a>
+      <a href="#pricing-section">料金</a>
+      <a href="#company-section">会社情報</a>
+      <a href="https://admin.mamoru-kun.com" class="admin-login-btn" target="_blank">
+        🔐 管理者ログイン
+      </a>
+    </div>
+
+    <!-- メニューオーバーレイ -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
     <!-- ローディング画面 -->
     <div class="loader-wrapper" id="loader">
       <div class="loader"></div>
@@ -967,7 +1096,7 @@
     </section>
 
     <!-- 問題提起 -->
-    <section class="problem">
+    <section id="problem-section" class="problem">
       <div class="container">
         <h2 class="section-title">
           社員の健康管理、こんな課題を抱えていませんか？
@@ -1004,7 +1133,7 @@
     </section>
 
     <!-- ソリューション -->
-    <section class="solution">
+    <section id="solution-section" class="solution">
       <div class="container">
         <h2 class="section-title">続けられる3つの仕組み</h2>
 
@@ -1036,7 +1165,7 @@
     </section>
 
     <!-- 実績 -->
-    <section class="results">
+    <section id="results-section" class="results">
       <div class="container">
         <h2 class="section-title">導入企業での実績</h2>
 
@@ -1063,7 +1192,7 @@
     </section>
 
     <!-- 料金 -->
-    <section class="pricing">
+    <section id="pricing-section" class="pricing">
       <div class="container">
         <h2 class="section-title">シンプルな料金体系</h2>
 
@@ -1410,7 +1539,7 @@
     </script>
 
     <!-- 会社情報 -->
-    <section class="company">
+    <section id="company-section" class="company">
       <div class="container">
         <h2 class="section-title">開発者について</h2>
 
@@ -1461,6 +1590,28 @@
     </footer>
 
     <script>
+      // ハンバーガーメニューの制御
+      const hamburgerMenu = document.getElementById("hamburgerMenu");
+      const menuPanel = document.getElementById("menuPanel");
+      const menuOverlay = document.getElementById("menuOverlay");
+      
+      function toggleMenu() {
+        hamburgerMenu.classList.toggle("active");
+        menuPanel.classList.toggle("active");
+        menuOverlay.classList.toggle("active");
+      }
+      
+      hamburgerMenu.addEventListener("click", toggleMenu);
+      menuOverlay.addEventListener("click", toggleMenu);
+      
+      // メニューリンクをクリックしたら閉じる
+      const menuLinks = menuPanel.querySelectorAll("a");
+      menuLinks.forEach(link => {
+        if (!link.classList.contains("admin-login-btn")) {
+          link.addEventListener("click", toggleMenu);
+        }
+      });
+
       // ローダー非表示
       window.addEventListener("load", () => {
         setTimeout(() => {
