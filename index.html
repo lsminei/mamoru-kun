@@ -822,6 +822,72 @@
         }
       }
 
+      /* 企業ロゴセクション */
+      .client-logos-section {
+        padding: 60px 0;
+        background: white;
+        border-top: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+      }
+
+      /* 非表示にしたい場合は下記のコメントを外してください */
+      /* .client-logos-section { display: none !important; } */
+
+      .client-logos-title {
+        text-align: center;
+        font-size: 1.2rem;
+        color: #666;
+        margin-bottom: 40px;
+        font-weight: normal;
+      }
+
+      .client-logos-grid {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 40px;
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      .client-logo {
+        width: 120px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        filter: grayscale(100%);
+        opacity: 0.6;
+        transition: all 0.3s ease;
+      }
+
+      .client-logo:hover {
+        filter: grayscale(0%);
+        opacity: 1;
+        transform: scale(1.05);
+      }
+
+      .client-logo img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
+
+      /* サンプルロゴのプレースホルダー */
+      .logo-placeholder {
+        width: 100%;
+        height: 100%;
+        background: #f0f0f0;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        color: #999;
+        border: 2px dashed #ddd;
+      }
+
       @media (max-width: 768px) {
         .problem-grid,
         .features-grid,
@@ -1098,6 +1164,42 @@
           守くんは、忙しい現代の職場環境でも続けられる健康管理アプリです。<br />
           わずか15秒のエクササイズで、社員の健康習慣を定着させます。
         </p>
+      </div>
+    </section>
+
+    <!-- 企業ロゴセクション（表示/非表示切り替え可能） -->
+    <!-- 非表示にする場合: class="client-logos-section" を class="client-logos-section" style="display: none;" に変更 -->
+    <section class="client-logos-section">
+      <div class="container">
+        <p class="client-logos-title">導入をご検討いただいている企業様</p>
+        <div class="client-logos-grid">
+          <!-- 実際のロゴに置き換え可能 -->
+          <div class="client-logo">
+            <div class="logo-placeholder">企業ロゴ1</div>
+          </div>
+          <div class="client-logo">
+            <div class="logo-placeholder">企業ロゴ2</div>
+          </div>
+          <div class="client-logo">
+            <div class="logo-placeholder">企業ロゴ3</div>
+          </div>
+          <div class="client-logo">
+            <div class="logo-placeholder">企業ロゴ4</div>
+          </div>
+          <div class="client-logo">
+            <div class="logo-placeholder">企業ロゴ5</div>
+          </div>
+          
+          <!-- 実際のロゴ画像を使用する場合の例: -->
+          <!-- 
+          <div class="client-logo">
+            <img src="images/company1-logo.png" alt="会社名1">
+          </div>
+          <div class="client-logo">
+            <img src="images/company2-logo.png" alt="会社名2">
+          </div>
+          -->
+        </div>
       </div>
     </section>
 
