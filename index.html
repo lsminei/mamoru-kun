@@ -1038,6 +1038,73 @@
     </style>
   </head>
   <body>
+    <!-- ==========================================
+         セクション表示設定
+         ========================================== -->
+    <script>
+      // セクション設定（簡単に変更可能）
+      const SECTION_CONFIG = {
+        // 非表示にしたいセクションのIDを配列で指定
+        hideSections: [
+          // "intro-section",      // イントロダクション
+          // "client-logos",       // 企業ロゴ
+          // "problem-section",    // 課題
+          // "solution-section",   // 解決策
+          // "results-section",    // 実績
+          // "pricing-section",    // 料金
+          // "contact-form",       // 事前登録フォーム
+          // "company-section",    // 会社情報
+        ],
+        
+        // セクションの表示順序（上から順に表示）
+        sectionOrder: [
+          "hero-section",        // 1. ヒーロー
+          "intro-section",       // 2. イントロダクション
+          "client-logos",        // 3. 企業ロゴ
+          "problem-section",     // 4. 課題
+          "solution-section",    // 5. 解決策
+          "results-section",     // 6. 実績
+          "pricing-section",     // 7. 料金
+          "contact-form",        // 8. 事前登録
+          "company-section",     // 9. 会社情報
+        ]
+      };
+      
+      // ページロード時にセクション制御を適用
+      document.addEventListener('DOMContentLoaded', function() {
+        // セクションの表示/非表示
+        SECTION_CONFIG.hideSections.forEach(sectionId => {
+          const section = document.getElementById(sectionId);
+          if (section) {
+            section.style.display = 'none';
+          }
+        });
+        
+        // セクションの並び替え（オプション - コメントアウトで無効化可能）
+        // reorderSections();
+      });
+      
+      // セクションの並び替え関数
+      function reorderSections() {
+        const mainContent = document.getElementById('main-content');
+        if (!mainContent) return;
+        
+        const sections = {};
+        SECTION_CONFIG.sectionOrder.forEach(id => {
+          const section = document.getElementById(id);
+          if (section) {
+            sections[id] = section;
+            section.remove();
+          }
+        });
+        
+        SECTION_CONFIG.sectionOrder.forEach(id => {
+          if (sections[id]) {
+            mainContent.appendChild(sections[id]);
+          }
+        });
+      }
+    </script>
     <!-- ハンバーガーメニュー -->
     <div class="hamburger-menu" id="hamburgerMenu">
       <span></span>
@@ -1047,7 +1114,7 @@
 
     <!-- メニューパネル -->
     <div class="menu-panel" id="menuPanel">
-      <a href="#contactForm">事前登録</a>
+      <a href="#contact-form">事前登録</a>
       <a href="#problem-section">課題</a>
       <a href="#solution-section">解決策</a>
       <a href="#results-section">実績</a>
@@ -1066,8 +1133,11 @@
       <div class="loader"></div>
     </div>
 
+    <!-- メインコンテンツ -->
+    <div id="main-content">
+    
     <!-- ヒーローセクション -->
-    <section class="hero-section">
+    <section id="hero-section" class="hero-section">
       <!-- アニメーション背景 -->
       <div class="hero-bg-animation">
         <div class="floating-shape shape-1"></div>
@@ -1135,6 +1205,7 @@
 
     <!-- イントロダクション -->
     <section
+      id="intro-section"
       class="intro-section"
       style="
         padding: 80px 0;
@@ -1167,9 +1238,8 @@
       </div>
     </section>
 
-    <!-- 企業ロゴセクション（表示/非表示切り替え可能） -->
-    <!-- 非表示にする場合: class="client-logos-section" を class="client-logos-section" style="display: none;" に変更 -->
-    <section class="client-logos-section">
+    <!-- 企業ロゴセクション -->
+    <section id="client-logos" class="client-logos-section">
       <div class="container">
         <p class="client-logos-title">導入をご検討いただいている企業様</p>
         <div class="client-logos-grid">
@@ -1326,7 +1396,7 @@
 
     <!-- お申し込みフォーム -->
     <section
-      id="contactForm"
+      id="contact-form"
       class="contact-form-section"
       style="
         padding: 80px 0;
@@ -1696,6 +1766,8 @@
         </p>
       </div>
     </footer>
+    
+    </div> <!-- main-content 終了 -->
 
     <script>
       // ハンバーガーメニューの制御
