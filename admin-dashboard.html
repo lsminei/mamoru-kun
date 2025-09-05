@@ -219,23 +219,177 @@
             100% { transform: rotate(360deg); }
         }
 
+        /* カード形式（モバイル用） */
+        .cards-container {
+            display: none;
+        }
+
+        .contact-card {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .contact-card:active {
+            transform: scale(0.98);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .card-company {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .card-name {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .card-date {
+            font-size: 0.85rem;
+            color: #999;
+            white-space: nowrap;
+        }
+
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .card-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .card-label {
+            color: #999;
+            min-width: 70px;
+            font-size: 0.85rem;
+        }
+
+        .card-value {
+            color: #333;
+            word-break: break-word;
+        }
+
+        .card-value a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .card-footer {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
         /* レスポンシブ */
         @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .table-container {
+            .container {
                 padding: 10px;
             }
 
-            table {
+            .header {
+                padding: 15px 10px;
+            }
+
+            .header h1 {
+                font-size: 1.2rem;
+            }
+
+            .header-content {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .logout-btn {
+                padding: 8px 16px;
                 font-size: 0.9rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 15px;
+                text-align: center;
+            }
+
+            .stat-card h3 {
+                font-size: 0.75rem;
+                margin-bottom: 5px;
+            }
+
+            .stat-number {
+                font-size: 1.8rem;
+            }
+
+            .table-container {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .table-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+
+            .table-header h2 {
+                font-size: 1.3rem;
+            }
+
+            .filter-buttons {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .filter-btn {
+                font-size: 0.85rem;
+                padding: 10px;
+                text-align: center;
+            }
+
+            .search-input {
+                font-size: 16px;
+                padding: 10px;
+            }
+
+            /* テーブルを非表示、カード表示 */
+            table {
+                display: none;
+            }
+
+            .cards-container {
+                display: block;
+            }
+
+            /* エクスポートボタンを目立たせる */
+            .filter-btn:last-child {
+                grid-column: 1 / -1;
+                background: #e5ce4b;
+                color: #333;
+                font-weight: bold;
             }
         }
     </style>
@@ -361,7 +515,8 @@
                 return;
             }
             
-            let html = `
+            // テーブル表示（PC用）
+            let tableHtml = `
                 <table>
                     <thead>
                         <tr>
@@ -378,11 +533,16 @@
                     <tbody>
             `;
             
+            // カード表示（モバイル用）
+            let cardsHtml = '<div class="cards-container">';
+            
             data.forEach(item => {
                 const date = new Date(item.created_at);
                 const dateStr = date.toLocaleString('ja-JP');
+                const shortDateStr = date.toLocaleDateString('ja-JP');
                 
-                html += `
+                // テーブル行
+                tableHtml += `
                     <tr>
                         <td>${dateStr}</td>
                         <td>${item.company}</td>
@@ -394,14 +554,57 @@
                         <td><span class="status-badge status-new">新規</span></td>
                     </tr>
                 `;
+                
+                // カード
+                cardsHtml += `
+                    <div class="contact-card">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-company">${item.company}</div>
+                                <div class="card-name">${item.name}</div>
+                            </div>
+                            <div class="card-date">${shortDateStr}</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-row">
+                                <span class="card-label">メール:</span>
+                                <span class="card-value"><a href="mailto:${item.email}">${item.email}</a></span>
+                            </div>
+                            ${item.phone ? `
+                            <div class="card-row">
+                                <span class="card-label">電話:</span>
+                                <span class="card-value"><a href="tel:${item.phone}">${item.phone}</a></span>
+                            </div>
+                            ` : ''}
+                            ${item.employees ? `
+                            <div class="card-row">
+                                <span class="card-label">従業員数:</span>
+                                <span class="card-value">${item.employees}</span>
+                            </div>
+                            ` : ''}
+                            ${item.message ? `
+                            <div class="card-row">
+                                <span class="card-label">メッセージ:</span>
+                                <span class="card-value">${item.message}</span>
+                            </div>
+                            ` : ''}
+                        </div>
+                        <div class="card-footer">
+                            <span class="status-badge status-new">新規</span>
+                            <span style="color: #999; font-size: 0.8rem;">${date.toLocaleTimeString('ja-JP')}</span>
+                        </div>
+                    </div>
+                `;
             });
             
-            html += `
+            tableHtml += `
                     </tbody>
                 </table>
             `;
             
-            document.getElementById('tableContent').innerHTML = html;
+            cardsHtml += '</div>';
+            
+            document.getElementById('tableContent').innerHTML = tableHtml + cardsHtml;
         }
         
         // フィルター機能
