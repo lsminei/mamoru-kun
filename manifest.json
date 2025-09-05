@@ -1,0 +1,32 @@
+{
+  "name": "守くん - 健康管理アプリ",
+  "short_name": "守くん",
+  "description": "社員の健康を守る、15秒の健康管理アプリ",
+  "start_url": "/mamoru-kun/",
+  "display": "standalone",
+  "background_color": "#e5ce4b",
+  "theme_color": "#e5ce4b",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["health", "fitness", "medical"],
+  "lang": "ja"
+}

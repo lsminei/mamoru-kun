@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景（ゴールド系） -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e5ce4b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f4e08c;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景にグラデーション適用 -->
+  <rect width="512" height="512" fill="url(#bgGradient)" rx="80"/>
+  
+  <!-- 白い円（文字の背景） -->
+  <circle cx="256" cy="256" r="180" fill="white" opacity="0.95"/>
+  
+  <!-- 「守」の文字を大きく中央に -->
+  <text x="256" y="320" 
+        font-family="Hiragino Sans, Noto Sans JP, sans-serif" 
+        font-size="240" 
+        font-weight="bold" 
+        text-anchor="middle" 
+        fill="#e5ce4b">守</text>
+  
+  <!-- 健康を表す小さなハートビートライン（上部） -->
+  <g transform="translate(256, 100)">
+    <polyline points="-80,0 -60,0 -50,-15 -40,15 -30,-20 -20,20 -10,-25 0,20 10,-20 20,15 30,-15 40,0 60,0" 
+              stroke="white" 
+              stroke-width="4" 
+              stroke-linecap="round" 
+              stroke-linejoin="round"
+              fill="none" 
+              opacity="0.8"/>
+  </g>
+  
+  <!-- 健康を表す小さなハートビートライン（下部） -->
+  <g transform="translate(256, 412)">
+    <polyline points="-80,0 -60,0 -50,-15 -40,15 -30,-20 -20,20 -10,-25 0,20 10,-20 20,15 30,-15 40,0 60,0" 
+              stroke="white" 
+              stroke-width="4" 
+              stroke-linecap="round" 
+              stroke-linejoin="round"
+              fill="none" 
+              opacity="0.8"/>
+  </g>
+  
+  <!-- 四隅に小さなハート -->
+  <g opacity="0.4">
+    <path d="M 80,80 C 75,70 65,70 65,80 C 65,90 80,105 80,105 C 80,105 95,90 95,80 C 95,70 85,70 80,80 Z" fill="white"/>
+    <path d="M 432,80 C 427,70 417,70 417,80 C 417,90 432,105 432,105 C 432,105 447,90 447,80 C 447,70 437,70 432,80 Z" fill="white"/>
+    <path d="M 80,432 C 75,422 65,422 65,432 C 65,442 80,457 80,457 C 80,457 95,442 95,432 C 95,422 85,422 80,432 Z" fill="white"/>
+    <path d="M 432,432 C 427,422 417,422 417,432 C 417,442 432,457 432,457 C 432,457 447,442 447,432 C 447,422 437,422 432,432 Z" fill="white"/>
+  </g>
+</svg>
