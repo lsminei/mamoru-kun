@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景（紫系グラデーション - 管理画面らしい色） -->
+  <defs>
+    <linearGradient id="adminBgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景にグラデーション適用 -->
+  <rect width="512" height="512" fill="url(#adminBgGradient)" rx="80"/>
+  
+  <!-- 白い円（文字の背景） -->
+  <circle cx="256" cy="280" r="160" fill="white" opacity="0.95"/>
+  
+  <!-- 「管」の文字を大きく中央に -->
+  <text x="256" y="340" 
+        font-family="Hiragino Sans, Noto Sans JP, sans-serif" 
+        font-size="200" 
+        font-weight="bold" 
+        text-anchor="middle" 
+        fill="#667eea">管</text>
+  
+  <!-- 管理者を表す設定アイコン（上部） -->
+  <g transform="translate(256, 100)">
+    <!-- 歯車アイコン -->
+    <g transform="scale(0.5)">
+      <path d="M -20,-60 L -20,-40 Q -30,-40 -40,-30 L -50,-45 L -65,-30 L -50,-15 Q -50,-5 -50,5 L -65,20 L -50,35 L -35,20 Q -25,30 -15,30 L -15,50 L 15,50 L 15,30 Q 25,30 35,20 L 50,35 L 65,20 L 50,5 Q 50,-5 50,-15 L 65,-30 L 50,-45 L 40,-30 Q 30,-40 20,-40 L 20,-60 Z" 
+            fill="white" 
+            opacity="0.9"/>
+      <circle cx="0" cy="0" r="20" fill="#667eea"/>
+    </g>
+  </g>
+  
+  <!-- グラフアイコン（左下） -->
+  <g transform="translate(120, 400)" opacity="0.8">
+    <rect x="0" y="0" width="12" height="30" fill="white" rx="2"/>
+    <rect x="18" y="-10" width="12" height="40" fill="white" rx="2"/>
+    <rect x="36" y="-5" width="12" height="35" fill="white" rx="2"/>
+  </g>
+  
+  <!-- チェックマーク（右下） -->
+  <g transform="translate(380, 400)" opacity="0.8">
+    <path d="M 0,10 L 12,22 L 35,-5" 
+          stroke="white" 
+          stroke-width="6" 
+          stroke-linecap="round" 
+          stroke-linejoin="round"
+          fill="none"/>
+  </g>
+  
+  <!-- 守くんのロゴ（小さく上部に） -->
+  <text x="256" y="60" 
+        font-family="Hiragino Sans, Noto Sans JP, sans-serif" 
+        font-size="24" 
+        font-weight="normal" 
+        text-anchor="middle" 
+        fill="white"
+        opacity="0.8">守くん</text>
+</svg>

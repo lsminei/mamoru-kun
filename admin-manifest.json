@@ -1,0 +1,20 @@
+{
+  "name": "守くん管理画面",
+  "short_name": "守くん管理",
+  "description": "守くん管理画面 - 事前登録データの管理",
+  "start_url": "/mamoru-kun/admin-dashboard.html",
+  "display": "standalone",
+  "background_color": "#667eea",
+  "theme_color": "#667eea",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "admin-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "productivity"],
+  "lang": "ja"
+}
