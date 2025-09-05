@@ -1289,6 +1289,93 @@
         </div>
       </section>
 
+      <!-- アプリ体験デモセクション -->
+      <section class="demo-intro-section" style="
+        padding: 40px 0;
+        text-align: center;
+      ">
+        <div class="container" style="max-width: 600px; margin: 0 auto; padding: 0 20px;">
+          <p style="
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 20px;
+          ">
+            アプリのデモ、見ましたか？
+          </p>
+          
+          <button onclick="showDemo()" style="
+            background: white;
+            border: 2px solid #e5ce4b;
+            color: #333;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+          " onmouseover="this.style.background='#e5ce4b'; this.style.transform='scale(1.1)'" 
+             onmouseout="this.style.background='white'; this.style.transform='scale(1)'">
+            <div style="
+              width: 0;
+              height: 0;
+              border-left: 20px solid #333;
+              border-top: 12px solid transparent;
+              border-bottom: 12px solid transparent;
+              margin-left: 5px;
+            "></div>
+          </button>
+          
+          <p style="
+            margin-top: 15px;
+            color: #999;
+            font-size: 0.85rem;
+          ">
+            1分で体験できます
+          </p>
+        </div>
+      </section>
+      
+      <style>
+        @keyframes pulse {
+          0%, 100% {
+            transform: scale(1);
+            opacity: 1;
+          }
+          50% {
+            transform: scale(1.05);
+            opacity: 0.8;
+          }
+        }
+        
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
+        }
+        
+        .mobile-only {
+          display: none;
+        }
+        
+        @media (max-width: 768px) {
+          .mobile-only {
+            display: inline;
+          }
+          
+          .demo-features {
+            gap: 20px !important;
+          }
+        }
+      </style>
+
       <!-- 企業ロゴセクション -->
       <section id="client-logos" class="client-logos-section">
         <div class="container">
