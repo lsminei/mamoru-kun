@@ -352,6 +352,11 @@
                 grid-template-columns: repeat(3, 1fr);
                 gap: 10px;
             }
+            
+            /* 従業員総数カードはモバイルでも全幅 */
+            .stats-grid .stat-card[style*="grid-column"] {
+                grid-column: 1 / -1 !important;
+            }
 
             .stat-card {
                 padding: 15px;
@@ -442,6 +447,15 @@
             <div class="stat-card">
                 <h3>今日の登録</h3>
                 <div class="stat-number" id="todayCount">0</div>
+            </div>
+        </div>
+
+        <!-- 従業員総数 -->
+        <div class="stats-grid" style="margin-top: 20px;">
+            <div class="stat-card" style="grid-column: 1 / -1;">
+                <h3>従業員総数</h3>
+                <div class="stat-number" id="employeeTotal" style="color: #e5ce4b;">0</div>
+                <div style="font-size: 0.9rem; color: #999; margin-top: 5px;" id="employeeRange">計算中...</div>
             </div>
         </div>
 
@@ -537,6 +551,48 @@
                 d.created_at && d.created_at.startsWith(thisMonth)
             );
             document.getElementById('monthCount').textContent = monthData.length;
+            
+            // 従業員総数を計算
+            calculateEmployeeTotal(activeData);
+        }
+        
+        // 従業員総数の計算
+        function calculateEmployeeTotal(data) {
+            let minTotal = 0;
+            let maxTotal = 0;
+            
+            data.forEach(item => {
+                if (item.employees) {
+                    // 従業員数のパターンを解析
+                    const employeeRange = item.employees;
+                    
+                    if (employeeRange === '1-10名') {
+                        minTotal += 1;
+                        maxTotal += 10;
+                    } else if (employeeRange === '10-50名') {
+                        minTotal += 10;
+                        maxTotal += 50;
+                    } else if (employeeRange === '50-100名') {
+                        minTotal += 50;
+                        maxTotal += 100;
+                    } else if (employeeRange === '100-500名') {
+                        minTotal += 100;
+                        maxTotal += 500;
+                    } else if (employeeRange === '500名以上') {
+                        minTotal += 500;
+                        maxTotal += 1000; // 上限を仮に1000とする
+                    }
+                }
+            });
+            
+            // 表示を更新
+            if (minTotal > 0 || maxTotal > 0) {
+                document.getElementById('employeeTotal').textContent = `${minTotal.toLocaleString()} - ${maxTotal.toLocaleString()}`;
+                document.getElementById('employeeRange').textContent = `登録企業${data.filter(d => d.employees).length}社の従業員数合計`;
+            } else {
+                document.getElementById('employeeTotal').textContent = '0';
+                document.getElementById('employeeRange').textContent = '従業員数データなし';
+            }
         }
         
         // データ表示
