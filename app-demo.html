@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>守くん - アプリデモ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* スマホのフレーム */
+        .phone-container {
+            width: 375px;
+            height: 812px;
+            background: #1a1a1a;
+            border-radius: 40px;
+            padding: 10px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 30px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ステータスバー */
+        .status-bar {
+            height: 44px;
+            background: #f8f8f8;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            font-size: 14px;
+        }
+
+        /* 各画面の共通スタイル */
+        .screen {
+            position: absolute;
+            top: 44px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 1. ログイン画面 */
+        .login-screen {
+            padding: 40px 30px;
+            background: linear-gradient(135deg, #e5ce4b 0%, #f4e08c 100%);
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .login-logo h1 {
+            font-size: 60px;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .login-logo p {
+            color: rgba(255,255,255,0.9);
+            font-size: 14px;
+        }
+
+        .login-form {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #e5ce4b 0%, #f4e08c 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* 2. ダッシュボード画面 */
+        .dashboard-screen {
+            background: #f5f7fa;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, #e5ce4b 0%, #f4e08c 100%);
+            padding: 30px 20px;
+            color: white;
+        }
+
+        .dashboard-header h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .streak-container {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(255,255,255,0.2);
+            border-radius: 15px;
+            padding: 15px;
+        }
+
+        .streak-item {
+            text-align: center;
+        }
+
+        .streak-number {
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .streak-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .today-exercise {
+            margin: 20px;
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .today-exercise h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .exercise-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .exercise-card:hover {
+            transform: scale(1.02);
+        }
+
+        .exercise-time {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .exercise-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .start-btn {
+            background: white;
+            color: #667eea;
+            padding: 10px 30px;
+            border-radius: 20px;
+            border: none;
+            font-weight: bold;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+
+        /* 3. 動画一覧画面 */
+        .videos-screen {
+            background: #f5f7fa;
+            padding: 20px;
+        }
+
+        .videos-header {
+            margin-bottom: 20px;
+        }
+
+        .videos-header h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .level-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .level-tab {
+            padding: 8px 16px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .level-tab.active {
+            background: linear-gradient(135deg, #e5ce4b 0%, #f4e08c 100%);
+            color: white;
+            border-color: #e5ce4b;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .video-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: transform 0.3s;
+            position: relative;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(135deg, #e5ce4b 0%, #f4e08c 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: white;
+        }
+
+        .video-info {
+            padding: 10px;
+        }
+
+        .video-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .video-duration {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .locked-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 30px;
+        }
+
+        /* 4. 動画視聴画面 */
+        .video-player-screen {
+            background: #000;
+        }
+
+        .video-player {
+            width: 100%;
+            height: 250px;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .play-pause-btn {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .play-pause-btn:hover {
+            background: rgba(255,255,255,0.5);
+        }
+
+        .play-icon {
+            width: 0;
+            height: 0;
+            border-left: 30px solid white;
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+            margin-left: 10px;
+        }
+
+        .video-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(255,255,255,0.3);
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #e5ce4b;
+            transition: width 0.3s;
+        }
+
+        .video-content {
+            background: white;
+            padding: 20px;
+            height: calc(100% - 250px);
+            overflow-y: auto;
+        }
+
+        .video-content h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .exercise-steps {
+            margin-top: 20px;
+        }
+
+        .step {
+            background: #f8f8f8;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .step-number {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #e5ce4b 0%, #f4e08c 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .complete-btn {
+            width: calc(100% - 40px);
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, #e5ce4b 0%, #f4e08c 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* ナビゲーションバー */
+        .nav-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding-bottom: 20px;
+        }
+
+        .nav-item {
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .nav-item:hover {
+            transform: scale(1.1);
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .nav-label {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .nav-item.active .nav-icon {
+            color: #e5ce4b;
+        }
+
+        .nav-item.active .nav-label {
+            color: #e5ce4b;
+        }
+
+        /* コントロールボタン */
+        .demo-controls {
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .demo-btn {
+            padding: 10px 20px;
+            background: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .demo-btn:hover {
+            background: #e5ce4b;
+            color: white;
+        }
+
+        /* レスポンシブ対応 */
+        @media (max-width: 480px) {
+            .phone-container {
+                width: 100%;
+                max-width: 375px;
+                height: calc(100vh - 100px);
+                max-height: 812px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <div class="phone-screen">
+            <!-- ステータスバー -->
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>守くん</span>
+                <span>🔋 100%</span>
+            </div>
+
+            <!-- 1. ログイン画面 -->
+            <div class="screen login-screen active" id="loginScreen">
+                <div class="login-logo">
+                    <h1>守</h1>
+                    <p>健康は15秒から始まる</p>
+                </div>
+                <div class="login-form">
+                    <div class="input-group">
+                        <label>メールアドレス</label>
+                        <input type="email" placeholder="email@company.com">
+                    </div>
+                    <div class="input-group">
+                        <label>パスワード</label>
+                        <input type="password" placeholder="••••••••">
+                    </div>
+                    <button class="login-btn" onclick="showScreen('dashboardScreen')">ログイン</button>
+                </div>
+            </div>
+
+            <!-- 2. ダッシュボード画面 -->
+            <div class="screen dashboard-screen" id="dashboardScreen">
+                <div class="dashboard-header">
+                    <h2>おはようございます！田中さん</h2>
+                    <div class="streak-container">
+                        <div class="streak-item">
+                            <div class="streak-number">7</div>
+                            <div class="streak-label">連続日数</div>
+                        </div>
+                        <div class="streak-item">
+                            <div class="streak-number">Lv.3</div>
+                            <div class="streak-label">現在レベル</div>
+                        </div>
+                        <div class="streak-item">
+                            <div class="streak-number">85</div>
+                            <div class="streak-label">健康ポイント</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="today-exercise">
+                    <h3>今日のエクササイズ</h3>
+                    <div class="exercise-card" onclick="showScreen('videoPlayerScreen')">
+                        <div class="exercise-time">15秒</div>
+                        <div class="exercise-title">肩こり解消ストレッチ</div>
+                        <button class="start-btn">始める →</button>
+                    </div>
+                </div>
+
+                <!-- ナビゲーションバー -->
+                <div class="nav-bar">
+                    <div class="nav-item active">
+                        <div class="nav-icon">🏠</div>
+                        <div class="nav-label">ホーム</div>
+                    </div>
+                    <div class="nav-item" onclick="showScreen('videosScreen')">
+                        <div class="nav-icon">📹</div>
+                        <div class="nav-label">動画</div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">📊</div>
+                        <div class="nav-label">記録</div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">👤</div>
+                        <div class="nav-label">設定</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. 動画一覧画面 -->
+            <div class="screen videos-screen" id="videosScreen">
+                <div class="videos-header">
+                    <h2>エクササイズ動画</h2>
+                </div>
+
+                <div class="level-tabs">
+                    <div class="level-tab active">Lv.1-3</div>
+                    <div class="level-tab">Lv.4-6 🔒</div>
+                    <div class="level-tab">Lv.7-9 🔒</div>
+                </div>
+
+                <div class="video-grid">
+                    <div class="video-card" onclick="showScreen('videoPlayerScreen')">
+                        <div class="video-thumbnail">🧘</div>
+                        <div class="video-info">
+                            <div class="video-title">深呼吸リラックス</div>
+                            <div class="video-duration">15秒 • Lv.1</div>
+                        </div>
+                    </div>
+                    <div class="video-card" onclick="showScreen('videoPlayerScreen')">
+                        <div class="video-thumbnail">💪</div>
+                        <div class="video-info">
+                            <div class="video-title">デスクで筋トレ</div>
+                            <div class="video-duration">15秒 • Lv.2</div>
+                        </div>
+                    </div>
+                    <div class="video-card" onclick="showScreen('videoPlayerScreen')">
+                        <div class="video-thumbnail">🏃</div>
+                        <div class="video-info">
+                            <div class="video-title">その場ジョギング</div>
+                            <div class="video-duration">15秒 • Lv.3</div>
+                        </div>
+                    </div>
+                    <div class="video-card">
+                        <div class="video-thumbnail">🤸</div>
+                        <div class="video-info">
+                            <div class="video-title">体幹トレーニング</div>
+                            <div class="video-duration">15秒 • Lv.4</div>
+                        </div>
+                        <div class="locked-overlay">🔒</div>
+                    </div>
+                </div>
+
+                <!-- ナビゲーションバー -->
+                <div class="nav-bar">
+                    <div class="nav-item" onclick="showScreen('dashboardScreen')">
+                        <div class="nav-icon">🏠</div>
+                        <div class="nav-label">ホーム</div>
+                    </div>
+                    <div class="nav-item active">
+                        <div class="nav-icon">📹</div>
+                        <div class="nav-label">動画</div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">📊</div>
+                        <div class="nav-label">記録</div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">👤</div>
+                        <div class="nav-label">設定</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. 動画視聴画面 -->
+            <div class="screen video-player-screen" id="videoPlayerScreen">
+                <div class="video-player">
+                    <div class="play-pause-btn" onclick="playVideo()">
+                        <div class="play-icon"></div>
+                    </div>
+                    <div class="video-progress">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                </div>
+                <div class="video-content">
+                    <h3>肩こり解消ストレッチ</h3>
+                    <p style="color: #666; margin-bottom: 20px;">デスクワークの合間にできる簡単ストレッチ</p>
+                    
+                    <div class="exercise-steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div>両肩を耳に近づけるように上げる（3秒）</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div>ゆっくりと肩を後ろに回す（4秒）</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div>肩を下ろしてリラックス（3秒）</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div>首を左右にゆっくり回す（5秒）</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="complete-btn" onclick="completeExercise()">完了！+10ポイント</button>
+            </div>
+        </div>
+
+        <!-- デモコントロール -->
+        <div class="demo-controls">
+            <button class="demo-btn" onclick="showScreen('loginScreen')">ログイン</button>
+            <button class="demo-btn" onclick="showScreen('dashboardScreen')">ダッシュボード</button>
+            <button class="demo-btn" onclick="showScreen('videosScreen')">動画一覧</button>
+            <button class="demo-btn" onclick="showScreen('videoPlayerScreen')">動画視聴</button>
+        </div>
+    </div>
+
+    <script>
+        // 画面切り替え
+        function showScreen(screenId) {
+            // すべての画面を非表示
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            // 指定された画面を表示
+            const targetScreen = document.getElementById(screenId);
+            if (targetScreen) {
+                targetScreen.classList.add('active');
+            }
+        }
+
+        // 動画再生シミュレーション
+        let isPlaying = false;
+        let progress = 0;
+        let playInterval;
+
+        function playVideo() {
+            const progressBar = document.getElementById('progressBar');
+            
+            if (!isPlaying) {
+                isPlaying = true;
+                playInterval = setInterval(() => {
+                    progress += 100 / 15; // 15秒で100%
+                    progressBar.style.width = progress + '%';
+                    
+                    if (progress >= 100) {
+                        clearInterval(playInterval);
+                        isPlaying = false;
+                        progress = 0;
+                        setTimeout(() => {
+                            progressBar.style.width = '0%';
+                        }, 1000);
+                    }
+                }, 1000);
+            }
+        }
+
+        // エクササイズ完了
+        function completeExercise() {
+            alert('素晴らしい！10ポイント獲得しました！🎉');
+            showScreen('dashboardScreen');
+        }
+
+        // 自動デモモード（オプション）
+        let demoMode = false;
+        let demoStep = 0;
+        const demoScreens = ['loginScreen', 'dashboardScreen', 'videosScreen', 'videoPlayerScreen'];
+
+        function startAutoDemo() {
+            if (!demoMode) {
+                demoMode = true;
+                setInterval(() => {
+                    showScreen(demoScreens[demoStep]);
+                    demoStep = (demoStep + 1) % demoScreens.length;
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>
