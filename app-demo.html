@@ -14,7 +14,7 @@
 
         body {
             font-family: 'Noto Sans JP', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: transparent;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -122,6 +122,55 @@
         @keyframes swipeHint {
             0%, 100% { transform: translateX(-50%); }
             50% { transform: translateX(-50%) translateX(-10px); }
+        }
+
+        /* ナビゲーション矢印 */
+        .nav-arrows {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            z-index: 101;
+        }
+
+        .nav-arrow {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid #e5ce4b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #e5ce4b;
+        }
+
+        .nav-arrow:hover {
+            background: #e5ce4b;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .nav-arrow:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .nav-arrow:disabled:hover {
+            background: white;
+            color: #e5ce4b;
+            transform: scale(1);
+        }
+
+        .nav-center {
+            font-size: 32px;
+            display: flex;
+            align-items: center;
         }
 
         /* 1. ログイン画面 */
@@ -580,6 +629,21 @@
             <!-- スワイプヒント -->
             <div class="swipe-hint">← 左にスワイプで次の画面へ</div>
 
+            <!-- ナビゲーション矢印 -->
+            <div class="nav-arrows">
+                <button class="nav-arrow nav-prev" onclick="previousScreen()" id="prevBtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </button>
+                <div class="nav-center">📱</div>
+                <button class="nav-arrow nav-next" onclick="nextScreen()" id="nextBtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+            </div>
+
             <!-- 画面コンテナ -->
             <div class="screens-container" id="screensContainer">
                 <!-- 1. ログイン画面 -->
@@ -742,7 +806,17 @@
             if (currentScreenIndex < totalScreens - 1) {
                 swipeHint.textContent = '← 左にスワイプで次の画面へ';
             } else {
-                swipeHint.textContent = '← スワイプで最初に戻る';
+                swipeHint.textContent = '← スワイプでLPに戻る';
+            }
+            
+            // 矢印ボタンの状態更新
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            if (prevBtn) prevBtn.disabled = currentScreenIndex === 0;
+            if (nextBtn) {
+                nextBtn.innerHTML = currentScreenIndex === totalScreens - 1 ? 
+                    '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10M7 17L17 7"/></svg>' : 
+                    '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>';
             }
         }
 
@@ -857,6 +931,9 @@
                 }, 1000);
             }
         }
+
+        // 初期化
+        updateScreen();
 
         // エクササイズ完了
         function completeExercise() {
