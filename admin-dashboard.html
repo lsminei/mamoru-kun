@@ -560,35 +560,50 @@
         function calculateEmployeeTotal(data) {
             let minTotal = 0;
             let maxTotal = 0;
+            let companiesWithEmployees = 0;
+            
+            // デバッグ用：どんなデータが来ているか確認
+            console.log('計算対象データ:', data.length + '件');
             
             data.forEach(item => {
                 if (item.employees) {
                     // 従業員数のパターンを解析
-                    const employeeRange = item.employees;
+                    const employeeRange = item.employees.trim();
+                    console.log('従業員数データ:', employeeRange);
                     
-                    if (employeeRange === '1-10名') {
+                    // より柔軟なマッチング
+                    if (employeeRange.includes('1-10') || employeeRange === '1-10名' || employeeRange === '1-10') {
                         minTotal += 1;
                         maxTotal += 10;
-                    } else if (employeeRange === '10-50名') {
+                        companiesWithEmployees++;
+                    } else if (employeeRange.includes('10-50') || employeeRange === '10-50名' || employeeRange === '10-50') {
                         minTotal += 10;
                         maxTotal += 50;
-                    } else if (employeeRange === '50-100名') {
+                        companiesWithEmployees++;
+                    } else if (employeeRange.includes('50-100') || employeeRange === '50-100名' || employeeRange === '50-100') {
                         minTotal += 50;
                         maxTotal += 100;
-                    } else if (employeeRange === '100-500名') {
+                        companiesWithEmployees++;
+                    } else if (employeeRange.includes('100-500') || employeeRange === '100-500名' || employeeRange === '100-500') {
                         minTotal += 100;
                         maxTotal += 500;
-                    } else if (employeeRange === '500名以上') {
+                        companiesWithEmployees++;
+                    } else if (employeeRange.includes('500') && employeeRange.includes('以上')) {
                         minTotal += 500;
                         maxTotal += 1000; // 上限を仮に1000とする
+                        companiesWithEmployees++;
+                    } else {
+                        console.log('マッチしない形式:', employeeRange);
                     }
                 }
             });
             
+            console.log('集計結果: 最小', minTotal, '最大', maxTotal, '企業数', companiesWithEmployees);
+            
             // 表示を更新
             if (minTotal > 0 || maxTotal > 0) {
                 document.getElementById('employeeTotal').textContent = `${minTotal.toLocaleString()} - ${maxTotal.toLocaleString()}`;
-                document.getElementById('employeeRange').textContent = `登録企業${data.filter(d => d.employees).length}社の従業員数合計`;
+                document.getElementById('employeeRange').textContent = `登録企業${companiesWithEmployees}社の従業員数合計`;
             } else {
                 document.getElementById('employeeTotal').textContent = '0';
                 document.getElementById('employeeRange').textContent = '従業員数データなし';
