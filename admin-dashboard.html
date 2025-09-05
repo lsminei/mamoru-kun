@@ -571,27 +571,34 @@
                     const employeeRange = item.employees.trim();
                     console.log('従業員数データ:', employeeRange);
                     
-                    // より柔軟なマッチング
-                    if (employeeRange.includes('1-10') || employeeRange === '1-10名' || employeeRange === '1-10') {
-                        minTotal += 1;
-                        maxTotal += 10;
+                    // より柔軟なマッチング - 数字の範囲を正規表現で取得
+                    const rangeMatch = employeeRange.match(/(\d+)[^\d]*[-~〜][^\d]*(\d+)/);
+                    const singleMatch = employeeRange.match(/(\d+)/);
+                    
+                    if (rangeMatch) {
+                        // 範囲形式（例: 31-50, 1-10名, 100~500人など）
+                        const min = parseInt(rangeMatch[1]);
+                        const max = parseInt(rangeMatch[2]);
+                        minTotal += min;
+                        maxTotal += max;
                         companiesWithEmployees++;
-                    } else if (employeeRange.includes('10-50') || employeeRange === '10-50名' || employeeRange === '10-50') {
-                        minTotal += 10;
-                        maxTotal += 50;
+                        console.log(`範囲マッチ: ${min}-${max}`);
+                    } else if (employeeRange.includes('以上')) {
+                        // 「X以上」形式
+                        if (singleMatch) {
+                            const min = parseInt(singleMatch[1]);
+                            minTotal += min;
+                            maxTotal += min * 2; // 上限を2倍と仮定
+                            companiesWithEmployees++;
+                            console.log(`以上マッチ: ${min}以上`);
+                        }
+                    } else if (singleMatch) {
+                        // 単一数値の場合
+                        const num = parseInt(singleMatch[1]);
+                        minTotal += num;
+                        maxTotal += num;
                         companiesWithEmployees++;
-                    } else if (employeeRange.includes('50-100') || employeeRange === '50-100名' || employeeRange === '50-100') {
-                        minTotal += 50;
-                        maxTotal += 100;
-                        companiesWithEmployees++;
-                    } else if (employeeRange.includes('100-500') || employeeRange === '100-500名' || employeeRange === '100-500') {
-                        minTotal += 100;
-                        maxTotal += 500;
-                        companiesWithEmployees++;
-                    } else if (employeeRange.includes('500') && employeeRange.includes('以上')) {
-                        minTotal += 500;
-                        maxTotal += 1000; // 上限を仮に1000とする
-                        companiesWithEmployees++;
+                        console.log(`単一マッチ: ${num}`);
                     } else {
                         console.log('マッチしない形式:', employeeRange);
                     }
