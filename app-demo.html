@@ -14,32 +14,13 @@
 
         body {
             font-family: 'Noto Sans JP', sans-serif;
-            background: transparent;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        /* スマホのフレーム */
-        .phone-container {
-            width: 375px;
-            height: 812px;
-            background: #1a1a1a;
-            border-radius: 40px;
-            padding: 10px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            position: relative;
-        }
-
-        .phone-screen {
-            width: 100%;
-            height: 100%;
             background: white;
-            border-radius: 30px;
+            margin: 0;
+            padding: 0;
             overflow: hidden;
             position: relative;
+            width: 100%;
+            height: 100vh;
         }
 
         /* ステータスバー */
@@ -51,12 +32,18 @@
             justify-content: space-between;
             padding: 0 20px;
             font-size: 14px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #e0e0e0;
         }
 
         /* 各画面の共通スタイル */
         .screens-container {
             position: absolute;
-            top: 44px;
+            top: 0;
             left: 0;
             right: 0;
             bottom: 0;
@@ -68,29 +55,26 @@
         .screen {
             position: relative;
             width: 100%;
-            height: 100%;
+            height: 100vh;
             background: white;
             flex-shrink: 0;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-            }
-            to {
-                transform: translateX(0);
-            }
+            overflow-y: auto;
+            padding-top: 44px;
         }
 
         /* スワイプインジケーター */
         .swipe-indicator {
-            position: absolute;
-            bottom: 100px;
+            position: fixed;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
             gap: 8px;
-            z-index: 100;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 12px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
         }
 
         .dot {
@@ -107,30 +91,13 @@
             background: #e5ce4b;
         }
 
-        /* スワイプヒント */
-        .swipe-hint {
-            position: absolute;
-            bottom: 140px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #666;
-            font-size: 12px;
-            animation: swipeHint 2s infinite;
-            z-index: 100;
-        }
-
-        @keyframes swipeHint {
-            0%, 100% { transform: translateX(-50%); }
-            50% { transform: translateX(-50%) translateX(-10px); }
-        }
-
         /* ナビゲーション矢印 */
         .nav-arrow {
             position: fixed;
             top: 50%;
             transform: translateY(-50%);
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background: white;
             border: 2px solid #e5ce4b;
@@ -140,18 +107,18 @@
             cursor: pointer;
             transition: all 0.3s;
             color: #333;
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bold;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             z-index: 1000;
         }
 
         .nav-prev {
-            left: 20px;
+            left: 10px;
         }
 
         .nav-next {
-            right: 20px;
+            right: 10px;
         }
 
         .nav-arrow:hover {
@@ -165,32 +132,11 @@
             cursor: not-allowed;
         }
 
-        .nav-arrow:disabled:hover {
-            background: white;
-            color: #333;
-            transform: translateY(-50%) scale(1);
-        }
-
-        @media (max-width: 600px) {
-            .nav-arrow {
-                width: 40px;
-                height: 40px;
-                font-size: 20px;
-            }
-            
-            .nav-prev {
-                left: 10px;
-            }
-            
-            .nav-next {
-                right: 10px;
-            }
-        }
-
         /* 1. ログイン画面 */
         .login-screen {
-            padding: 40px 30px;
+            padding: 80px 30px 40px;
             background: linear-gradient(135deg, #e5ce4b 0%, #f4e08c 100%);
+            min-height: 100vh;
         }
 
         .login-logo {
@@ -214,6 +160,8 @@
             border-radius: 20px;
             padding: 30px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 500px;
+            margin: 0 auto;
         }
 
         .input-group {
@@ -248,20 +196,76 @@
             margin-top: 10px;
         }
 
-        /* 2. ダッシュボード画面 */
+        /* 2. 管理者ダッシュボード */
+        .admin-dashboard {
+            background: #f5f7fa;
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px 20px;
+            color: white;
+            margin-top: -44px;
+            padding-top: 74px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .department-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .employee-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .employee-card {
+            font-size: 14px;
+            background: #f5f5f5;
+            padding: 8px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .employee-card.warning {
+            background: #fff3cd;
+        }
+
+        /* 3. 個人ダッシュボード */
         .dashboard-screen {
             background: #f5f7fa;
+            min-height: 100vh;
+            padding-bottom: 40px;
         }
 
         .dashboard-header {
             background: linear-gradient(135deg, #e5ce4b 0%, #f4e08c 100%);
             padding: 30px 20px;
             color: white;
-        }
-
-        .dashboard-header h2 {
-            font-size: 24px;
-            margin-bottom: 20px;
+            margin-top: -44px;
+            padding-top: 74px;
         }
 
         .streak-container {
@@ -270,6 +274,7 @@
             background: rgba(255,255,255,0.2);
             border-radius: 15px;
             padding: 15px;
+            margin-top: 20px;
         }
 
         .streak-item {
@@ -286,74 +291,37 @@
             opacity: 0.9;
         }
 
-        .today-exercise {
-            margin: 20px;
-            background: white;
-            border-radius: 20px;
+        .exercise-section {
             padding: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
-
-        .today-exercise h3 {
-            color: #333;
-            margin-bottom: 15px;
         }
 
         .exercise-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: white;
             border-radius: 15px;
             padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .exercise-card-main {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
+            padding: 30px;
             text-align: center;
-            cursor: pointer;
-            transition: transform 0.3s;
         }
 
-        .exercise-card:hover {
-            transform: scale(1.02);
-        }
-
-        .exercise-time {
-            font-size: 48px;
-            font-weight: bold;
-            margin: 10px 0;
-        }
-
-        .exercise-title {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-
-        .start-btn {
-            background: white;
-            color: #667eea;
-            padding: 10px 30px;
-            border-radius: 20px;
-            border: none;
-            font-weight: bold;
-            margin-top: 15px;
-            cursor: pointer;
-        }
-
-        /* 3. 動画一覧画面 */
+        /* 4. 動画一覧画面 */
         .videos-screen {
             background: #f5f7fa;
-            padding: 20px;
-        }
-
-        .videos-header {
-            margin-bottom: 20px;
-        }
-
-        .videos-header h2 {
-            color: #333;
-            margin-bottom: 10px;
+            padding: 60px 20px 40px;
+            min-height: 100vh;
         }
 
         .level-tabs {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
+            overflow-x: auto;
         }
 
         .level-tab {
@@ -363,7 +331,8 @@
             border-radius: 20px;
             font-size: 14px;
             cursor: pointer;
-            transition: all 0.3s;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .level-tab.active {
@@ -374,7 +343,7 @@
 
         .video-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
             gap: 15px;
         }
 
@@ -387,55 +356,71 @@
             transition: transform 0.3s;
             position: relative;
         }
-
-        .video-card:hover {
-            transform: translateY(-5px);
+        
+        .video-card.locked {
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+        
+        .video-card.locked:hover {
+            transform: none;
         }
 
         .video-thumbnail {
             width: 100%;
-            height: 100px;
+            height: 120px;
             background: linear-gradient(135deg, #e5ce4b 0%, #f4e08c 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 40px;
             color: white;
+            position: relative;
         }
-
-        .video-info {
-            padding: 10px;
-        }
-
-        .video-title {
-            font-size: 14px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .video-duration {
-            font-size: 12px;
-            color: #999;
-        }
-
-        .locked-overlay {
+        
+        .lock-overlay {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0, 0, 0, 0.7);
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             color: white;
+        }
+        
+        .lock-icon {
             font-size: 30px;
+            margin-bottom: 5px;
+        }
+        
+        .unlock-text {
+            font-size: 10px;
+            opacity: 0.9;
+        }
+        
+        .achievement-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
-        /* 4. 動画視聴画面 */
+        /* 5. 動画視聴画面 */
         .video-player-screen {
             background: #000;
+            min-height: 100vh;
         }
 
         .video-player {
@@ -448,68 +433,21 @@
             position: relative;
         }
 
-        .play-pause-btn {
-            width: 80px;
-            height: 80px;
-            background: rgba(255,255,255,0.3);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .play-pause-btn:hover {
-            background: rgba(255,255,255,0.5);
-        }
-
-        .play-icon {
-            width: 0;
-            height: 0;
-            border-left: 30px solid white;
-            border-top: 20px solid transparent;
-            border-bottom: 20px solid transparent;
-            margin-left: 10px;
-        }
-
-        .video-progress {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: rgba(255,255,255,0.3);
-        }
-
-        .progress-bar {
-            height: 100%;
-            width: 0%;
-            background: #e5ce4b;
-            transition: width 0.3s;
-        }
-
         .video-content {
             background: white;
             padding: 20px;
-            height: calc(100% - 250px);
-            overflow-y: auto;
-        }
-
-        .video-content h3 {
-            color: #333;
-            margin-bottom: 15px;
+            min-height: calc(100vh - 250px);
         }
 
         .exercise-steps {
-            margin-top: 20px;
+            margin-top: 30px;
         }
 
         .step {
             background: #f8f8f8;
             border-radius: 10px;
             padding: 15px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
             gap: 15px;
@@ -527,382 +465,606 @@
             font-weight: bold;
             flex-shrink: 0;
         }
-
-        .complete-btn {
-            width: calc(100% - 40px);
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            padding: 15px;
-            background: linear-gradient(135deg, #e5ce4b 0%, #f4e08c 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        /* ナビゲーションバー */
-        .nav-bar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 80px;
-            background: white;
-            border-top: 1px solid #e0e0e0;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding-bottom: 20px;
-        }
-
-        .nav-item {
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-
-        .nav-item:hover {
-            transform: scale(1.1);
-        }
-
-        .nav-icon {
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
-
-        .nav-label {
-            font-size: 12px;
-            color: #666;
-        }
-
-        .nav-item.active .nav-icon {
-            color: #e5ce4b;
-        }
-
-        .nav-item.active .nav-label {
-            color: #e5ce4b;
-        }
-
-        /* コントロールボタン */
-        .demo-controls {
-            position: absolute;
-            bottom: -60px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 10px;
-        }
-
-        .demo-btn {
-            padding: 10px 20px;
-            background: white;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
-        }
-
-        .demo-btn:hover {
-            background: #e5ce4b;
-            color: white;
-        }
-
-        /* レスポンシブ対応 */
-        @media (max-width: 480px) {
-            .phone-container {
-                width: 100%;
-                max-width: 375px;
-                height: calc(100vh - 100px);
-                max-height: 812px;
-            }
-        }
     </style>
 </head>
 <body>
-    <!-- 左矢印（スマホの外） -->
-    <button class="nav-arrow nav-prev" onclick="previousScreen()" id="prevBtn">
-        ←
-    </button>
+    <!-- ステータスバー -->
+    <div class="status-bar">
+        <span>9:41</span>
+        <span>守くん</span>
+        <span>🔋 100%</span>
+    </div>
 
-    <div class="phone-container">
-        <div class="phone-screen">
-            <!-- ステータスバー -->
-            <div class="status-bar">
-                <span>9:41</span>
-                <span>守くん</span>
-                <span>🔋 100%</span>
+    <!-- ナビゲーション矢印 -->
+    <button class="nav-arrow nav-prev" onclick="previousScreen()" id="prevBtn">←</button>
+    <button class="nav-arrow nav-next" onclick="nextScreen()" id="nextBtn">→</button>
+
+    <!-- スワイプインジケーター -->
+    <div class="swipe-indicator">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+    </div>
+
+    <!-- 画面コンテナ -->
+    <div class="screens-container" id="screensContainer">
+        <!-- 1. ログイン画面 -->
+        <div class="screen login-screen" id="loginScreen">
+            <div class="login-logo">
+                <h1>守</h1>
+                <p>健康は15秒から始まる</p>
             </div>
-
-            <!-- スワイプインジケーター -->
-            <div class="swipe-indicator">
-                <div class="dot active"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-            </div>
-
-            <!-- スワイプヒント -->
-            <div class="swipe-hint">← 左にスワイプで次の画面へ</div>
-
-
-            <!-- 画面コンテナ -->
-            <div class="screens-container" id="screensContainer">
-                <!-- 1. ログイン画面 -->
-                <div class="screen login-screen" id="loginScreen">
-                <div class="login-logo">
-                    <h1>守</h1>
-                    <p>健康は15秒から始まる</p>
+            <div class="login-form">
+                <div class="input-group">
+                    <label>メールアドレス</label>
+                    <input type="email" placeholder="email@company.com">
                 </div>
-                <div class="login-form">
-                    <div class="input-group">
-                        <label>メールアドレス</label>
-                        <input type="email" placeholder="email@company.com">
-                    </div>
-                    <div class="input-group">
-                        <label>パスワード</label>
-                        <input type="password" placeholder="••••••••">
-                    </div>
-                    <button class="login-btn" onclick="nextScreen()">ログイン</button>
+                <div class="input-group">
+                    <label>パスワード</label>
+                    <input type="password" placeholder="••••••••">
+                </div>
+                <button class="login-btn" onclick="nextScreen()">ログイン</button>
+                
+                <div style="margin-top: 30px; text-align: center;">
+                    <a href="#" style="color: #667eea; text-decoration: none;">パスワードを忘れた方</a>
+                </div>
+                
+                <div style="margin-top: 40px; padding: 20px; background: #f8f8f8; border-radius: 10px;">
+                    <h4 style="color: #333; margin-bottom: 10px;">デモアカウント</h4>
+                    <p style="color: #666; font-size: 14px;">Email: demo@company.com<br>Password: demo1234</p>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px; color: white;">
+                <p style="font-size: 12px; opacity: 0.8;">© 2025 守くん All Rights Reserved</p>
+            </div>
+        </div>
+
+        <!-- 2. 管理者ダッシュボード -->
+        <div class="screen admin-dashboard" id="adminDashboard">
+            <div class="admin-header">
+                <h2 style="font-size: 24px; margin-bottom: 10px;">🏢 管理者ダッシュボード</h2>
+                <p style="font-size: 14px; opacity: 0.9;">2025年9月5日（金）14:30 更新</p>
+            </div>
+
+            <!-- 全体統計 -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div style="font-size: 28px; font-weight: bold; color: #4CAF50;">😊 85%</div>
+                    <div style="font-size: 12px; color: #666; margin-top: 5px;">健康度</div>
+                </div>
+                <div class="stat-card">
+                    <div style="font-size: 28px; font-weight: bold; color: #2196F3;">42/50名</div>
+                    <div style="font-size: 12px; color: #666; margin-top: 5px;">本日実施</div>
+                </div>
+                <div class="stat-card">
+                    <div style="font-size: 28px; font-weight: bold; color: #FF9800;">7.2日</div>
+                    <div style="font-size: 12px; color: #666; margin-top: 5px;">平均継続</div>
+                </div>
+                <div class="stat-card">
+                    <div style="font-size: 28px; font-weight: bold; color: #9C27B0;">95%</div>
+                    <div style="font-size: 12px; color: #666; margin-top: 5px;">満足度</div>
                 </div>
             </div>
 
-            <!-- 2. ダッシュボード画面 -->
-            <div class="screen dashboard-screen" id="dashboardScreen">
-                <div class="dashboard-header">
-                    <h2>おはようございます！田中さん</h2>
-                    <div class="streak-container">
-                        <div class="streak-item">
-                            <div class="streak-number">7</div>
-                            <div class="streak-label">連続日数</div>
-                        </div>
-                        <div class="streak-item">
-                            <div class="streak-number">Lv.3</div>
-                            <div class="streak-label">現在レベル</div>
-                        </div>
-                        <div class="streak-item">
-                            <div class="streak-number">85</div>
-                            <div class="streak-label">健康ポイント</div>
+            <!-- 部署別健康状況 -->
+            <h3 style="font-size: 18px; color: #333; margin: 20px 20px 10px;">部署別 健康状況</h3>
+            
+            <!-- 営業部 -->
+            <div class="department-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <div style="font-weight: bold; color: #333;">営業部（15名）</div>
+                    <div style="font-size: 14px; color: #4CAF50;">健康度 88%</div>
+                </div>
+                <div class="employee-grid">
+                    <div class="employee-card">田中😊</div>
+                    <div class="employee-card">佐藤😊</div>
+                    <div class="employee-card">鈴木😄</div>
+                    <div class="employee-card">高橋😊</div>
+                    <div class="employee-card">渡辺😐</div>
+                    <div class="employee-card">伊藤😊</div>
+                    <div class="employee-card">山本😄</div>
+                    <div class="employee-card">中村😊</div>
+                    <div class="employee-card">小林😊</div>
+                    <div class="employee-card warning">山田😔</div>
+                    <div class="employee-card">加藤😊</div>
+                    <div class="employee-card">吉田😄</div>
+                    <div class="employee-card">山崎😊</div>
+                    <div class="employee-card">森😐</div>
+                    <div class="employee-card">池田😊</div>
+                </div>
+            </div>
+
+            <!-- 開発部 -->
+            <div class="department-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <div style="font-weight: bold; color: #333;">開発部（12名）</div>
+                    <div style="font-size: 14px; color: #FF9800;">健康度 75%</div>
+                </div>
+                <div class="employee-grid">
+                    <div class="employee-card">佐藤😊</div>
+                    <div class="employee-card">鈴木😐</div>
+                    <div class="employee-card">高橋😊</div>
+                    <div class="employee-card warning">山田😔</div>
+                    <div class="employee-card">渡辺😐</div>
+                    <div class="employee-card">伊藤😊</div>
+                    <div class="employee-card">中村😄</div>
+                    <div class="employee-card warning">小林😔</div>
+                    <div class="employee-card">加藤😐</div>
+                    <div class="employee-card">吉田😊</div>
+                    <div class="employee-card">山崎😊</div>
+                    <div class="employee-card">森😐</div>
+                </div>
+            </div>
+
+            <!-- 総務部 -->
+            <div class="department-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <div style="font-weight: bold; color: #333;">総務部（8名）</div>
+                    <div style="font-size: 14px; color: #4CAF50;">健康度 92%</div>
+                </div>
+                <div class="employee-grid">
+                    <div class="employee-card">斎藤😄</div>
+                    <div class="employee-card">松本😊</div>
+                    <div class="employee-card">井上😄</div>
+                    <div class="employee-card">木村😊</div>
+                    <div class="employee-card">林😊</div>
+                    <div class="employee-card">清水😄</div>
+                    <div class="employee-card">山口😊</div>
+                    <div class="employee-card">阿部😐</div>
+                </div>
+            </div>
+
+            <!-- 経理部 -->
+            <div class="department-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <div style="font-weight: bold; color: #333;">経理部（6名）</div>
+                    <div style="font-size: 14px; color: #4CAF50;">健康度 90%</div>
+                </div>
+                <div class="employee-grid">
+                    <div class="employee-card">橋本😊</div>
+                    <div class="employee-card">福田😄</div>
+                    <div class="employee-card">西村😊</div>
+                    <div class="employee-card">太田😊</div>
+                    <div class="employee-card">藤田😐</div>
+                    <div class="employee-card">岡田😊</div>
+                </div>
+            </div>
+
+            <!-- アラート -->
+            <div style="margin: 15px; background: #fff3cd; border-left: 4px solid #ffc107; padding: 12px; border-radius: 5px;">
+                <div style="font-weight: bold; color: #856404; margin-bottom: 5px;">⚠️ 注意が必要な社員</div>
+                <div style="font-size: 14px; color: #856404;">
+                    • 開発部の山田さん（3日連続 😔）<br>
+                    • 開発部の小林さん（2日連続 😔）<br>
+                    • 営業部の山田さん（本日未実施）
+                </div>
+            </div>
+
+            <!-- アクションボタン -->
+            <div style="padding: 15px; display: flex; gap: 10px;">
+                <button style="flex: 1; padding: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-weight: bold;">
+                    📊 詳細レポート
+                </button>
+                <button style="flex: 1; padding: 12px; background: #e5ce4b; color: #333; border: none; border-radius: 8px; font-weight: bold;">
+                    💌 励ましメッセージ
+                </button>
+            </div>
+
+            <!-- グラフエリア -->
+            <div class="department-section">
+                <h4 style="color: #333; margin-bottom: 15px;">週間トレンド</h4>
+                <div style="height: 200px; background: linear-gradient(to bottom, #e5ce4b20 0%, transparent 100%); border-radius: 10px; display: flex; align-items: flex-end; justify-content: space-around; padding: 20px;">
+                    <div style="width: 30px; background: #e5ce4b; height: 60%; border-radius: 5px 5px 0 0;"></div>
+                    <div style="width: 30px; background: #e5ce4b; height: 75%; border-radius: 5px 5px 0 0;"></div>
+                    <div style="width: 30px; background: #e5ce4b; height: 70%; border-radius: 5px 5px 0 0;"></div>
+                    <div style="width: 30px; background: #e5ce4b; height: 85%; border-radius: 5px 5px 0 0;"></div>
+                    <div style="width: 30px; background: #e5ce4b; height: 80%; border-radius: 5px 5px 0 0;"></div>
+                    <div style="width: 30px; background: #f4e08c; height: 90%; border-radius: 5px 5px 0 0;"></div>
+                    <div style="width: 30px; background: #f4e08c; height: 88%; border-radius: 5px 5px 0 0;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. 個人ダッシュボード -->
+        <div class="screen dashboard-screen" id="dashboardScreen">
+            <div class="dashboard-header">
+                <h2>おはようございます！田中さん</h2>
+                <div class="streak-container">
+                    <div class="streak-item">
+                        <div class="streak-number">7</div>
+                        <div class="streak-label">連続日数</div>
+                    </div>
+                    <div class="streak-item">
+                        <div class="streak-number">Lv.3</div>
+                        <div class="streak-label">現在レベル</div>
+                    </div>
+                    <div class="streak-item">
+                        <div class="streak-number">85</div>
+                        <div class="streak-label">健康ポイント</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="exercise-section">
+                <h3 style="color: #333; margin-bottom: 20px;">今日のエクササイズ</h3>
+                <div class="exercise-card exercise-card-main">
+                    <div style="font-size: 48px; margin-bottom: 10px;">15秒</div>
+                    <div style="font-size: 20px; margin-bottom: 15px;">肩こり解消ストレッチ</div>
+                    <button style="background: white; color: #667eea; padding: 10px 30px; border-radius: 20px; border: none; font-weight: bold;">始める →</button>
+                </div>
+
+                <h3 style="color: #333; margin: 30px 0 20px;">達成状況</h3>
+                <div class="exercise-card">
+                    <h4 style="color: #333; margin-bottom: 15px;">今週の実施率</h4>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span><span>日</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>✅</span><span>✅</span><span>✅</span><span>✅</span><span>⭕</span><span>-</span><span>-</span>
+                    </div>
+                </div>
+
+                <h3 style="color: #333; margin: 30px 0 20px;">おすすめエクササイズ</h3>
+                <div class="exercise-card">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div style="font-size: 40px;">🧘</div>
+                        <div>
+                            <h4 style="color: #333;">深呼吸リラックス</h4>
+                            <p style="color: #666; font-size: 14px;">15秒 • ストレス解消</p>
                         </div>
                     </div>
                 </div>
                 
-                <div class="today-exercise">
-                    <h3>今日のエクササイズ</h3>
-                    <div class="exercise-card">
-                        <div class="exercise-time">15秒</div>
-                        <div class="exercise-title">肩こり解消ストレッチ</div>
-                        <button class="start-btn">始める →</button>
+                <div class="exercise-card">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div style="font-size: 40px;">💪</div>
+                        <div>
+                            <h4 style="color: #333;">デスクで筋トレ</h4>
+                            <p style="color: #666; font-size: 14px;">15秒 • 筋力アップ</p>
+                        </div>
                     </div>
+                </div>
+                
+                <div class="exercise-card">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div style="font-size: 40px;">👀</div>
+                        <div>
+                            <h4 style="color: #333;">目の体操</h4>
+                            <p style="color: #666; font-size: 14px;">15秒 • 眼精疲労回復</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="color: #333; margin: 30px 0 20px;">ランキング</h3>
+                <div class="exercise-card">
+                    <div style="padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>🥇 佐藤さん</span>
+                            <span style="color: #666;">120ポイント</span>
+                        </div>
+                    </div>
+                    <div style="padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>🥈 鈴木さん</span>
+                            <span style="color: #666;">95ポイント</span>
+                        </div>
+                    </div>
+                    <div style="padding: 10px 0; border-bottom: 1px solid #f0f0f0; background: #e5ce4b20;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>🥉 あなた</span>
+                            <span style="color: #666;">85ポイント</span>
+                        </div>
+                    </div>
+                    <div style="padding: 10px 0;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>4位 高橋さん</span>
+                            <span style="color: #666;">80ポイント</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="color: #333; margin: 30px 0 20px;">健康アドバイス</h3>
+                <div class="exercise-card" style="background: linear-gradient(135deg, #e5ce4b20 0%, #f4e08c20 100%);">
+                    <h4 style="color: #333; margin-bottom: 10px;">💡 今日のヒント</h4>
+                    <p style="color: #666; font-size: 14px; line-height: 1.6;">
+                        15秒の運動でも、継続することで大きな効果があります。1日3回実施すると、集中力が20%向上するという研究結果があります。
+                    </p>
                 </div>
             </div>
-
-            <!-- 3. 動画一覧画面 -->
-            <div class="screen videos-screen" id="videosScreen">
-                <div class="videos-header">
-                    <h2>エクササイズ動画</h2>
-                </div>
-
-                <div class="level-tabs">
-                    <div class="level-tab active">Lv.1-3</div>
-                    <div class="level-tab">Lv.4-6 🔒</div>
-                    <div class="level-tab">Lv.7-9 🔒</div>
-                </div>
-
-                <div class="video-grid">
-                    <div class="video-card">
-                        <div class="video-thumbnail">🧘</div>
-                        <div class="video-info">
-                            <div class="video-title">深呼吸リラックス</div>
-                            <div class="video-duration">15秒 • Lv.1</div>
-                        </div>
-                    </div>
-                    <div class="video-card">
-                        <div class="video-thumbnail">💪</div>
-                        <div class="video-info">
-                            <div class="video-title">デスクで筋トレ</div>
-                            <div class="video-duration">15秒 • Lv.2</div>
-                        </div>
-                    </div>
-                    <div class="video-card">
-                        <div class="video-thumbnail">🏃</div>
-                        <div class="video-info">
-                            <div class="video-title">その場ジョギング</div>
-                            <div class="video-duration">15秒 • Lv.3</div>
-                        </div>
-                    </div>
-                    <div class="video-card">
-                        <div class="video-thumbnail">🤸</div>
-                        <div class="video-info">
-                            <div class="video-title">体幹トレーニング</div>
-                            <div class="video-duration">15秒 • Lv.4</div>
-                        </div>
-                        <div class="locked-overlay">🔒</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 4. 動画視聴画面 -->
-            <div class="screen video-player-screen" id="videoPlayerScreen">
-                <div class="video-player">
-                    <div class="play-pause-btn" onclick="playVideo()">
-                        <div class="play-icon"></div>
-                    </div>
-                    <div class="video-progress">
-                        <div class="progress-bar" id="progressBar"></div>
-                    </div>
-                </div>
-                <div class="video-content">
-                    <h3>肩こり解消ストレッチ</h3>
-                    <p style="color: #666; margin-bottom: 20px;">デスクワークの合間にできる簡単ストレッチ</p>
-                    
-                    <div class="exercise-steps">
-                        <div class="step">
-                            <div class="step-number">1</div>
-                            <div>両肩を耳に近づけるように上げる（3秒）</div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">2</div>
-                            <div>ゆっくりと肩を後ろに回す（4秒）</div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">3</div>
-                            <div>肩を下ろしてリラックス（3秒）</div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">4</div>
-                            <div>首を左右にゆっくり回す（5秒）</div>
-                        </div>
-                    </div>
-                </div>
-                <button class="complete-btn" onclick="completeExercise()">完了！+10ポイント</button>
-            </div>
-
-            <!-- 5. 管理者ダッシュボード画面 -->
-            <div class="screen admin-dashboard" id="adminDashboard">
-                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; color: white;">
-                    <h2 style="font-size: 20px; margin-bottom: 10px;">🏢 管理者ダッシュボード</h2>
-                    <p style="font-size: 14px; opacity: 0.9;">2025年9月5日（金）14:30 更新</p>
-                </div>
-
-                <!-- 全体統計 -->
-                <div style="display: flex; gap: 10px; padding: 15px; background: #f5f7fa;">
-                    <div style="flex: 1; background: white; border-radius: 10px; padding: 15px; text-align: center;">
-                        <div style="font-size: 24px; font-weight: bold; color: #4CAF50;">😊 85%</div>
-                        <div style="font-size: 12px; color: #666; margin-top: 5px;">健康度</div>
-                    </div>
-                    <div style="flex: 1; background: white; border-radius: 10px; padding: 15px; text-align: center;">
-                        <div style="font-size: 24px; font-weight: bold; color: #2196F3;">42/50名</div>
-                        <div style="font-size: 12px; color: #666; margin-top: 5px;">本日実施</div>
-                    </div>
-                    <div style="flex: 1; background: white; border-radius: 10px; padding: 15px; text-align: center;">
-                        <div style="font-size: 24px; font-weight: bold; color: #FF9800;">7.2日</div>
-                        <div style="font-size: 12px; color: #666; margin-top: 5px;">平均継続</div>
-                    </div>
-                </div>
-
-                <!-- 部署別健康状況 -->
-                <div style="padding: 15px;">
-                    <h3 style="font-size: 16px; color: #333; margin-bottom: 15px;">部署別 健康状況</h3>
-                    
-                    <!-- 営業部 -->
-                    <div style="background: white; border-radius: 10px; padding: 15px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                            <div style="font-weight: bold; color: #333;">営業部（15名）</div>
-                            <div style="font-size: 14px; color: #4CAF50;">健康度 88%</div>
-                        </div>
-                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                            <span style="font-size: 24px;">😊</span>
-                            <span style="font-size: 24px;">😊</span>
-                            <span style="font-size: 24px;">😄</span>
-                            <span style="font-size: 24px;">😊</span>
-                            <span style="font-size: 24px;">😐</span>
-                            <span style="font-size: 24px;">😊</span>
-                            <span style="font-size: 24px;">😄</span>
-                            <span style="font-size: 24px;">😊</span>
-                            <span style="font-size: 24px;">😊</span>
-                            <span style="font-size: 24px;">😔</span>
-                            <span style="font-size: 24px;">😊</span>
-                            <span style="font-size: 24px;">😄</span>
-                            <span style="font-size: 24px;">😊</span>
-                            <span style="font-size: 24px;">😐</span>
-                            <span style="font-size: 24px;">😊</span>
-                        </div>
-                    </div>
-
-                    <!-- 開発部 -->
-                    <div style="background: white; border-radius: 10px; padding: 15px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                            <div style="font-weight: bold; color: #333;">開発部（12名）</div>
-                            <div style="font-size: 14px; color: #FF9800;">健康度 75%</div>
-                        </div>
-                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                            <span style="font-size: 24px;">😊</span>
-                            <span style="font-size: 24px;">😐</span>
-                            <span style="font-size: 24px;">😊</span>
-                            <span style="font-size: 24px;">😔</span>
-                            <span style="font-size: 24px;">😐</span>
-                            <span style="font-size: 24px;">😊</span>
-                            <span style="font-size: 24px;">😄</span>
-                            <span style="font-size: 24px;">😔</span>
-                            <span style="font-size: 24px;">😐</span>
-                            <span style="font-size: 24px;">😊</span>
-                            <span style="font-size: 24px;">😊</span>
-                            <span style="font-size: 24px;">😐</span>
-                        </div>
-                    </div>
-
-                    <!-- 総務部 -->
-                    <div style="background: white; border-radius: 10px; padding: 15px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                            <div style="font-weight: bold; color: #333;">総務部（8名）</div>
-                            <div style="font-size: 14px; color: #4CAF50;">健康度 92%</div>
-                        </div>
-                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                            <span style="font-size: 24px;">😄</span>
-                            <span style="font-size: 24px;">😊</span>
-                            <span style="font-size: 24px;">😄</span>
-                            <span style="font-size: 24px;">😊</span>
-                            <span style="font-size: 24px;">😊</span>
-                            <span style="font-size: 24px;">😄</span>
-                            <span style="font-size: 24px;">😊</span>
-                            <span style="font-size: 24px;">😐</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- アラート -->
-                <div style="margin: 15px; background: #fff3cd; border-left: 4px solid #ffc107; padding: 12px; border-radius: 5px;">
-                    <div style="font-weight: bold; color: #856404; margin-bottom: 5px;">⚠️ 注意が必要な社員</div>
-                    <div style="font-size: 14px; color: #856404;">
-                        • 開発部の山田さん（3日連続 😔）<br>
-                        • 営業部の鈴木さん（継続日数0日）
-                    </div>
-                </div>
-
-                <!-- アクションボタン -->
-                <div style="padding: 15px; display: flex; gap: 10px;">
-                    <button style="flex: 1; padding: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-weight: bold;">
-                        📊 詳細レポート
-                    </button>
-                    <button style="flex: 1; padding: 12px; background: #e5ce4b; color: #333; border: none; border-radius: 8px; font-weight: bold;">
-                        💌 励ましメッセージ
-                    </button>
-                </div>
-            </div>
-            </div> <!-- screens-containerの閉じタグ -->
         </div>
 
-    </div>
+        <!-- 4. 動画一覧画面 -->
+        <div class="screen videos-screen" id="videosScreen">
+            <h2 style="color: #333; margin-bottom: 20px;">エクササイズ動画</h2>
+            
+            <!-- 進捗バー -->
+            <div style="background: white; border-radius: 15px; padding: 15px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <span style="font-weight: bold; color: #333;">現在の進捗</span>
+                    <span style="color: #e5ce4b; font-weight: bold;">Lv.3</span>
+                </div>
+                <div style="background: #f0f0f0; height: 8px; border-radius: 4px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, #e5ce4b 0%, #f4e08c 100%); width: 35%; height: 100%; position: relative;">
+                        <span style="position: absolute; right: -20px; top: -8px; font-size: 20px;">✨</span>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 12px; color: #999;">
+                    <span>12/35 クリア</span>
+                    <span>次のレベルまで: 3個</span>
+                </div>
+            </div>
 
-    <!-- 右矢印（スマホの外） -->
-    <button class="nav-arrow nav-next" onclick="nextScreen()" id="nextBtn">
-        →
-    </button>
+            <div class="level-tabs">
+                <div class="level-tab active">Lv.1-3</div>
+                <div class="level-tab">Lv.4-6 🔒</div>
+                <div class="level-tab">Lv.7-9 🔒</div>
+                <div class="level-tab">特別編 🔒</div>
+            </div>
+
+            <h3 style="color: #333; font-size: 16px; margin: 20px 0 15px;">基礎エクササイズ</h3>
+            <div class="video-grid">
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        🧘
+                        <div class="achievement-badge">✅ クリア</div>
+                    </div>
+                    <div style="padding: 10px;">
+                        <div style="font-weight: bold; color: #333;">深呼吸リラックス</div>
+                        <div style="font-size: 12px; color: #999;">15秒 • Lv.1</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        💪
+                        <div class="achievement-badge">✅ クリア</div>
+                    </div>
+                    <div style="padding: 10px;">
+                        <div style="font-weight: bold; color: #333;">デスクで筋トレ</div>
+                        <div style="font-size: 12px; color: #999;">15秒 • Lv.2</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumbnail">🏃</div>
+                    <div style="padding: 10px;">
+                        <div style="font-weight: bold; color: #333;">その場ジョギング</div>
+                        <div style="font-size: 12px; color: #999;">15秒 • Lv.3</div>
+                    </div>
+                </div>
+                <div class="video-card locked">
+                    <div class="video-thumbnail">
+                        👀
+                        <div class="lock-overlay">
+                            <div class="lock-icon">🔒</div>
+                            <div class="unlock-text">Lv.4で解放</div>
+                        </div>
+                    </div>
+                    <div style="padding: 10px;">
+                        <div style="font-weight: bold; color: #333;">目の体操プロ</div>
+                        <div style="font-size: 12px; color: #999;">15秒 • Lv.4</div>
+                    </div>
+                </div>
+                <div class="video-card locked">
+                    <div class="video-thumbnail">
+                        🙆
+                        <div class="lock-overlay">
+                            <div class="lock-icon">🔒</div>
+                            <div class="unlock-text">Lv.5で解放</div>
+                        </div>
+                    </div>
+                    <div style="padding: 10px;">
+                        <div style="font-weight: bold; color: #333;">首の完全ケア</div>
+                        <div style="font-size: 12px; color: #999;">15秒 • Lv.5</div>
+                    </div>
+                </div>
+                <div class="video-card locked">
+                    <div class="video-thumbnail">
+                        🤸
+                        <div class="lock-overlay">
+                            <div class="lock-icon">🔒</div>
+                            <div class="unlock-text">Lv.6で解放</div>
+                        </div>
+                    </div>
+                    <div style="padding: 10px;">
+                        <div style="font-weight: bold; color: #333;">体幹マスター</div>
+                        <div style="font-size: 12px; color: #999;">15秒 • Lv.6</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="color: #333; font-size: 16px; margin: 30px 0 15px;">症状別エクササイズ</h3>
+            <div class="video-grid">
+                <div class="video-card">
+                    <div class="video-thumbnail" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        🦴
+                        <div class="achievement-badge">✅ クリア</div>
+                    </div>
+                    <div style="padding: 10px;">
+                        <div style="font-weight: bold; color: #333;">腰痛改善</div>
+                        <div style="font-size: 12px; color: #999;">15秒 • Lv.2</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumbnail" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">🩺</div>
+                    <div style="padding: 10px;">
+                        <div style="font-weight: bold; color: #333;">肩こり解消</div>
+                        <div style="font-size: 12px; color: #999;">15秒 • Lv.2</div>
+                    </div>
+                </div>
+                <div class="video-card locked">
+                    <div class="video-thumbnail" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        😴
+                        <div class="lock-overlay">
+                            <div class="lock-icon">🔒</div>
+                            <div class="unlock-text">5個クリアで解放</div>
+                        </div>
+                    </div>
+                    <div style="padding: 10px;">
+                        <div style="font-weight: bold; color: #333;">疲労完全回復</div>
+                        <div style="font-size: 12px; color: #999;">15秒 • Lv.3</div>
+                    </div>
+                </div>
+                <div class="video-card locked">
+                    <div class="video-thumbnail" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        🧠
+                        <div class="lock-overlay">
+                            <div class="lock-icon">🔒</div>
+                            <div class="unlock-text">7個クリアで解放</div>
+                        </div>
+                    </div>
+                    <div style="padding: 10px;">
+                        <div style="font-weight: bold; color: #333;">超集中モード</div>
+                        <div style="font-size: 12px; color: #999;">15秒 • Lv.4</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="color: #333; font-size: 16px; margin: 30px 0 15px;">時間帯別おすすめ</h3>
+            <div class="video-grid">
+                <div class="video-card">
+                    <div class="video-thumbnail" style="background: linear-gradient(135deg, #FF9800 0%, #FFB74D 100%);">🌅</div>
+                    <div style="padding: 10px;">
+                        <div style="font-weight: bold; color: #333;">朝の目覚め体操</div>
+                        <div style="font-size: 12px; color: #999;">15秒 • Lv.1</div>
+                    </div>
+                </div>
+                <div class="video-card locked">
+                    <div class="video-thumbnail" style="background: linear-gradient(135deg, #FF9800 0%, #FFB74D 100%);">
+                        ☀️
+                        <div class="lock-overlay">
+                            <div class="lock-icon">🔒</div>
+                            <div class="unlock-text">連続3日で解放</div>
+                        </div>
+                    </div>
+                    <div style="padding: 10px;">
+                        <div style="font-weight: bold; color: #333;">パワーランチ</div>
+                        <div style="font-size: 12px; color: #999;">15秒 • Lv.3</div>
+                    </div>
+                </div>
+                <div class="video-card locked">
+                    <div class="video-thumbnail" style="background: linear-gradient(135deg, #FF9800 0%, #FFB74D 100%);">
+                        🌙
+                        <div class="lock-overlay">
+                            <div class="lock-icon">🔒</div>
+                            <div class="unlock-text">週5日達成で解放</div>
+                        </div>
+                    </div>
+                    <div style="padding: 10px;">
+                        <div style="font-weight: bold; color: #333;">熟睡プログラム</div>
+                        <div style="font-size: 12px; color: #999;">15秒 • Lv.5</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 特別報酬セクション -->
+            <div style="background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); border-radius: 15px; padding: 20px; margin: 30px 0; color: white;">
+                <h3 style="font-size: 18px; margin-bottom: 10px;">🏆 次の報酬まであと少し！</h3>
+                <p style="font-size: 14px; margin-bottom: 15px;">あと2個クリアで「特別ストレッチ」が解放されます</p>
+                <div style="display: flex; gap: 10px;">
+                    <div style="background: rgba(255,255,255,0.3); padding: 10px 15px; border-radius: 10px; font-size: 12px;">
+                        💎 限定バッジ
+                    </div>
+                    <div style="background: rgba(255,255,255,0.3); padding: 10px 15px; border-radius: 10px; font-size: 12px;">
+                        🎯 新エクササイズ
+                    </div>
+                    <div style="background: rgba(255,255,255,0.3); padding: 10px 15px; border-radius: 10px; font-size: 12px;">
+                        ⚡ スペシャル効果
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. 動画視聴画面 -->
+        <div class="screen video-player-screen" id="videoPlayerScreen">
+            <div class="video-player">
+                <div style="width: 80px; height: 80px; background: rgba(255,255,255,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                    <div style="width: 0; height: 0; border-left: 30px solid white; border-top: 20px solid transparent; border-bottom: 20px solid transparent; margin-left: 10px;"></div>
+                </div>
+            </div>
+            <div class="video-content">
+                <h3 style="color: #333;">肩こり解消ストレッチ</h3>
+                <p style="color: #666; margin: 10px 0 20px;">デスクワークの合間にできる簡単ストレッチ</p>
+                
+                <div style="display: flex; gap: 10px; margin-bottom: 30px;">
+                    <span style="background: #e5ce4b; color: white; padding: 5px 15px; border-radius: 20px; font-size: 14px;">15秒</span>
+                    <span style="background: #f0f0f0; color: #666; padding: 5px 15px; border-radius: 20px; font-size: 14px;">Lv.2</span>
+                    <span style="background: #f0f0f0; color: #666; padding: 5px 15px; border-radius: 20px; font-size: 14px;">肩こり</span>
+                </div>
+                
+                <div class="exercise-steps">
+                    <h4 style="color: #333; margin-bottom: 20px;">実施手順</h4>
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div>両肩を耳に近づけるように上げる（3秒）</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div>ゆっくりと肩を後ろに回す（4秒）</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div>肩を下ろしてリラックス（3秒）</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div>首を左右にゆっくり回す（5秒）</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px; padding: 20px; background: #f8f8f8; border-radius: 10px;">
+                    <h4 style="color: #333; margin-bottom: 10px;">💡 ポイント</h4>
+                    <ul style="color: #666; font-size: 14px; line-height: 1.8; padding-left: 20px;">
+                        <li>呼吸を止めないように注意しましょう</li>
+                        <li>無理に力を入れず、気持ちいい程度に行います</li>
+                        <li>1日3回実施すると効果的です</li>
+                    </ul>
+                </div>
+
+                <div style="margin-top: 20px; padding: 20px; background: #e5ce4b20; border-radius: 10px;">
+                    <h4 style="color: #333; margin-bottom: 10px;">🎯 期待できる効果</h4>
+                    <ul style="color: #666; font-size: 14px; line-height: 1.8; padding-left: 20px;">
+                        <li>肩こりの緩和</li>
+                        <li>血行促進</li>
+                        <li>ストレス解消</li>
+                        <li>集中力アップ</li>
+                    </ul>
+                </div>
+
+                <button style="width: 100%; margin-top: 30px; padding: 15px; background: linear-gradient(135deg, #e5ce4b 0%, #f4e08c 100%); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer;" onclick="completeExercise()">
+                    完了！+10ポイント
+                </button>
+
+                <div style="margin-top: 30px;">
+                    <h4 style="color: #333; margin-bottom: 15px;">関連エクササイズ</h4>
+                    <div style="display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px;">
+                        <div style="flex-shrink: 0; width: 150px; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                            <div style="height: 80px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; font-size: 30px;">🙆</div>
+                            <div style="padding: 10px;">
+                                <div style="font-size: 14px; font-weight: bold; color: #333;">首のストレッチ</div>
+                                <div style="font-size: 12px; color: #666;">15秒</div>
+                            </div>
+                        </div>
+                        <div style="flex-shrink: 0; width: 150px; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                            <div style="height: 80px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; font-size: 30px;">🦴</div>
+                            <div style="padding: 10px;">
+                                <div style="font-size: 14px; font-weight: bold; color: #333;">腰痛改善</div>
+                                <div style="font-size: 12px; color: #666;">15秒</div>
+                            </div>
+                        </div>
+                        <div style="flex-shrink: 0; width: 150px; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                            <div style="height: 80px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; font-size: 30px;">👀</div>
+                            <div style="padding: 10px;">
+                                <div style="font-size: 14px; font-weight: bold; color: #333;">目の体操</div>
+                                <div style="font-size: 12px; color: #666;">15秒</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         // 現在の画面インデックス
@@ -910,7 +1072,6 @@
         const totalScreens = 5;
         const screensContainer = document.getElementById('screensContainer');
         const dots = document.querySelectorAll('.dot');
-        const swipeHint = document.querySelector('.swipe-hint');
 
         // タッチ/マウスイベント用の変数
         let startX = 0;
@@ -926,19 +1087,24 @@
                 dot.classList.toggle('active', index === currentScreenIndex);
             });
             
-            // スワイプヒントの更新
-            if (currentScreenIndex < totalScreens - 1) {
-                swipeHint.textContent = '← 左にスワイプで次の画面へ';
-            } else {
-                swipeHint.textContent = '← スワイプでLPに戻る';
-            }
-            
             // 矢印ボタンの状態更新
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
             if (prevBtn) prevBtn.disabled = currentScreenIndex === 0;
             if (nextBtn) {
-                nextBtn.textContent = currentScreenIndex === totalScreens - 1 ? '✕' : '→';
+                if (currentScreenIndex === totalScreens - 1) {
+                    nextBtn.innerHTML = '✕';
+                    nextBtn.onclick = function() {
+                        if (window.parent && window.parent.closeDemo) {
+                            window.parent.closeDemo();
+                        } else {
+                            window.location.href = 'index.html';
+                        }
+                    };
+                } else {
+                    nextBtn.innerHTML = '→';
+                    nextBtn.onclick = nextScreen;
+                }
             }
         }
 
@@ -946,17 +1112,8 @@
         function nextScreen() {
             if (currentScreenIndex < totalScreens - 1) {
                 currentScreenIndex++;
-            } else {
-                // 最後の画面から親ウィンドウのcloseDemo関数を呼び出す
-                if (window.parent && window.parent.closeDemo) {
-                    window.parent.closeDemo();
-                } else {
-                    // iframeでない場合はindex.htmlへ
-                    window.location.href = 'index.html';
-                }
-                return;
+                updateScreen();
             }
-            updateScreen();
         }
 
         // 前の画面へ
@@ -1019,47 +1176,21 @@
         screensContainer.addEventListener('mouseup', handleEnd);
         screensContainer.addEventListener('mouseleave', handleEnd);
 
-        // キーボード操作（デバッグ用）
+        // キーボード操作
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowLeft') {
-                nextScreen();
-            } else if (e.key === 'ArrowRight') {
                 previousScreen();
+            } else if (e.key === 'ArrowRight') {
+                nextScreen();
             }
         });
-
-        // 動画再生シミュレーション
-        let isPlaying = false;
-        let progress = 0;
-        let playInterval;
-
-        function playVideo() {
-            const progressBar = document.getElementById('progressBar');
-            
-            if (!isPlaying) {
-                isPlaying = true;
-                playInterval = setInterval(() => {
-                    progress += 100 / 15; // 15秒で100%
-                    progressBar.style.width = progress + '%';
-                    
-                    if (progress >= 100) {
-                        clearInterval(playInterval);
-                        isPlaying = false;
-                        progress = 0;
-                        setTimeout(() => {
-                            progressBar.style.width = '0%';
-                        }, 1000);
-                    }
-                }, 1000);
-            }
-        }
 
         // 初期化
         updateScreen();
 
         // エクササイズ完了
         function completeExercise() {
-            // 完了メッセージ表示後、自動的に次の画面へ
+            // 完了メッセージ表示
             const message = document.createElement('div');
             message.style.cssText = `
                 position: fixed;
@@ -1072,7 +1203,7 @@
                 border-radius: 20px;
                 font-size: 18px;
                 font-weight: bold;
-                z-index: 1000;
+                z-index: 2000;
                 animation: fadeIn 0.5s;
             `;
             message.textContent = '素晴らしい！10ポイント獲得！🎉';
@@ -1080,11 +1211,10 @@
             
             setTimeout(() => {
                 document.body.removeChild(message);
-                // 親ウィンドウのcloseDemo関数を呼び出す
                 if (window.parent && window.parent.closeDemo) {
                     window.parent.closeDemo();
                 } else {
-                    window.location.href = 'index.html';
+                    previousScreen(); // ダッシュボードに戻る
                 }
             }, 2000);
         }
