@@ -437,15 +437,15 @@
         <!-- 統計情報 -->
         <div class="stats-grid">
             <div class="stat-card">
-                <h3>総登録数</h3>
+                <h3>総登録企業数</h3>
                 <div class="stat-number" id="totalCount">0</div>
             </div>
             <div class="stat-card">
-                <h3>今月の登録</h3>
+                <h3>今月の企業登録</h3>
                 <div class="stat-number" id="monthCount">0</div>
             </div>
             <div class="stat-card">
-                <h3>今日の登録</h3>
+                <h3>今日の企業登録</h3>
                 <div class="stat-number" id="todayCount">0</div>
             </div>
         </div>
@@ -456,6 +456,15 @@
                 <h3>従業員総数</h3>
                 <div class="stat-number" id="employeeTotal" style="color: #e5ce4b;">0</div>
                 <div style="font-size: 0.9rem; color: #999; margin-top: 5px;" id="employeeRange">計算中...</div>
+            </div>
+        </div>
+
+        <!-- 1万人までの残り -->
+        <div class="stats-grid" style="margin-top: 20px;">
+            <div class="stat-card" style="grid-column: 1 / -1; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <h3 style="color: white;">1万人まであと</h3>
+                <div class="stat-number" id="remainingCount" style="color: white;">10,000人</div>
+                <div style="font-size: 0.9rem; color: rgba(255,255,255,0.8); margin-top: 5px;" id="progressText">目標達成率: 0%</div>
             </div>
         </div>
 
@@ -611,9 +620,20 @@
             if (minTotal > 0 || maxTotal > 0) {
                 document.getElementById('employeeTotal').textContent = `${minTotal.toLocaleString()} - ${maxTotal.toLocaleString()}`;
                 document.getElementById('employeeRange').textContent = `登録企業${companiesWithEmployees}社の従業員数合計`;
+                
+                // 1万人までの残りを計算
+                const remaining = Math.max(0, 10000 - minTotal);
+                const progressPercent = Math.min(100, (minTotal / 10000 * 100)).toFixed(1);
+                
+                document.getElementById('remainingCount').textContent = 
+                    remaining > 0 ? `${remaining.toLocaleString()}人` : '達成！🎉';
+                document.getElementById('progressText').textContent = 
+                    `目標達成率: ${progressPercent}%`;
             } else {
                 document.getElementById('employeeTotal').textContent = '0';
                 document.getElementById('employeeRange').textContent = '従業員数データなし';
+                document.getElementById('remainingCount').textContent = '10,000人';
+                document.getElementById('progressText').textContent = '目標達成率: 0%';
             }
         }
         
