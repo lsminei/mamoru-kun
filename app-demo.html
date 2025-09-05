@@ -54,30 +54,74 @@
         }
 
         /* 各画面の共通スタイル */
-        .screen {
+        .screens-container {
             position: absolute;
             top: 44px;
             left: 0;
             right: 0;
             bottom: 0;
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+            will-change: transform;
+        }
+
+        .screen {
+            position: relative;
+            width: 100%;
+            height: 100%;
             background: white;
-            display: none;
-            animation: fadeIn 0.5s ease;
+            flex-shrink: 0;
         }
 
-        .screen.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
+        @keyframes slideIn {
             from {
-                opacity: 0;
-                transform: translateY(20px);
+                transform: translateX(100%);
             }
             to {
-                opacity: 1;
-                transform: translateY(0);
+                transform: translateX(0);
             }
+        }
+
+        /* スワイプインジケーター */
+        .swipe-indicator {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 100;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            width: 24px;
+            border-radius: 4px;
+            background: #e5ce4b;
+        }
+
+        /* スワイプヒント */
+        .swipe-hint {
+            position: absolute;
+            bottom: 140px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #666;
+            font-size: 12px;
+            animation: swipeHint 2s infinite;
+            z-index: 100;
+        }
+
+        @keyframes swipeHint {
+            0%, 100% { transform: translateX(-50%); }
+            50% { transform: translateX(-50%) translateX(-10px); }
         }
 
         /* 1. ログイン画面 */
@@ -525,8 +569,21 @@
                 <span>🔋 100%</span>
             </div>
 
-            <!-- 1. ログイン画面 -->
-            <div class="screen login-screen active" id="loginScreen">
+            <!-- スワイプインジケーター -->
+            <div class="swipe-indicator">
+                <div class="dot active"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+
+            <!-- スワイプヒント -->
+            <div class="swipe-hint">← 左にスワイプで次の画面へ</div>
+
+            <!-- 画面コンテナ -->
+            <div class="screens-container" id="screensContainer">
+                <!-- 1. ログイン画面 -->
+                <div class="screen login-screen" id="loginScreen">
                 <div class="login-logo">
                     <h1>守</h1>
                     <p>健康は15秒から始まる</p>
@@ -540,7 +597,7 @@
                         <label>パスワード</label>
                         <input type="password" placeholder="••••••••">
                     </div>
-                    <button class="login-btn" onclick="showScreen('dashboardScreen')">ログイン</button>
+                    <button class="login-btn" onclick="nextScreen()">ログイン</button>
                 </div>
             </div>
 
@@ -566,30 +623,10 @@
                 
                 <div class="today-exercise">
                     <h3>今日のエクササイズ</h3>
-                    <div class="exercise-card" onclick="showScreen('videoPlayerScreen')">
+                    <div class="exercise-card">
                         <div class="exercise-time">15秒</div>
                         <div class="exercise-title">肩こり解消ストレッチ</div>
                         <button class="start-btn">始める →</button>
-                    </div>
-                </div>
-
-                <!-- ナビゲーションバー -->
-                <div class="nav-bar">
-                    <div class="nav-item active">
-                        <div class="nav-icon">🏠</div>
-                        <div class="nav-label">ホーム</div>
-                    </div>
-                    <div class="nav-item" onclick="showScreen('videosScreen')">
-                        <div class="nav-icon">📹</div>
-                        <div class="nav-label">動画</div>
-                    </div>
-                    <div class="nav-item">
-                        <div class="nav-icon">📊</div>
-                        <div class="nav-label">記録</div>
-                    </div>
-                    <div class="nav-item">
-                        <div class="nav-icon">👤</div>
-                        <div class="nav-label">設定</div>
                     </div>
                 </div>
             </div>
@@ -607,21 +644,21 @@
                 </div>
 
                 <div class="video-grid">
-                    <div class="video-card" onclick="showScreen('videoPlayerScreen')">
+                    <div class="video-card">
                         <div class="video-thumbnail">🧘</div>
                         <div class="video-info">
                             <div class="video-title">深呼吸リラックス</div>
                             <div class="video-duration">15秒 • Lv.1</div>
                         </div>
                     </div>
-                    <div class="video-card" onclick="showScreen('videoPlayerScreen')">
+                    <div class="video-card">
                         <div class="video-thumbnail">💪</div>
                         <div class="video-info">
                             <div class="video-title">デスクで筋トレ</div>
                             <div class="video-duration">15秒 • Lv.2</div>
                         </div>
                     </div>
-                    <div class="video-card" onclick="showScreen('videoPlayerScreen')">
+                    <div class="video-card">
                         <div class="video-thumbnail">🏃</div>
                         <div class="video-info">
                             <div class="video-title">その場ジョギング</div>
@@ -635,26 +672,6 @@
                             <div class="video-duration">15秒 • Lv.4</div>
                         </div>
                         <div class="locked-overlay">🔒</div>
-                    </div>
-                </div>
-
-                <!-- ナビゲーションバー -->
-                <div class="nav-bar">
-                    <div class="nav-item" onclick="showScreen('dashboardScreen')">
-                        <div class="nav-icon">🏠</div>
-                        <div class="nav-label">ホーム</div>
-                    </div>
-                    <div class="nav-item active">
-                        <div class="nav-icon">📹</div>
-                        <div class="nav-label">動画</div>
-                    </div>
-                    <div class="nav-item">
-                        <div class="nav-icon">📊</div>
-                        <div class="nav-label">記録</div>
-                    </div>
-                    <div class="nav-item">
-                        <div class="nav-icon">👤</div>
-                        <div class="nav-label">設定</div>
                     </div>
                 </div>
             </div>
@@ -694,31 +711,121 @@
                 </div>
                 <button class="complete-btn" onclick="completeExercise()">完了！+10ポイント</button>
             </div>
+            </div> <!-- screens-containerの閉じタグ -->
         </div>
 
-        <!-- デモコントロール -->
-        <div class="demo-controls">
-            <button class="demo-btn" onclick="showScreen('loginScreen')">ログイン</button>
-            <button class="demo-btn" onclick="showScreen('dashboardScreen')">ダッシュボード</button>
-            <button class="demo-btn" onclick="showScreen('videosScreen')">動画一覧</button>
-            <button class="demo-btn" onclick="showScreen('videoPlayerScreen')">動画視聴</button>
-        </div>
     </div>
 
     <script>
-        // 画面切り替え
-        function showScreen(screenId) {
-            // すべての画面を非表示
-            document.querySelectorAll('.screen').forEach(screen => {
-                screen.classList.remove('active');
+        // 現在の画面インデックス
+        let currentScreenIndex = 0;
+        const totalScreens = 4;
+        const screensContainer = document.getElementById('screensContainer');
+        const dots = document.querySelectorAll('.dot');
+        const swipeHint = document.querySelector('.swipe-hint');
+
+        // タッチ/マウスイベント用の変数
+        let startX = 0;
+        let currentX = 0;
+        let isDragging = false;
+
+        // 画面更新
+        function updateScreen() {
+            screensContainer.style.transform = `translateX(-${currentScreenIndex * 100}%)`;
+            
+            // インジケーター更新
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentScreenIndex);
             });
             
-            // 指定された画面を表示
-            const targetScreen = document.getElementById(screenId);
-            if (targetScreen) {
-                targetScreen.classList.add('active');
+            // スワイプヒントの更新
+            if (currentScreenIndex < totalScreens - 1) {
+                swipeHint.textContent = '← 左にスワイプで次の画面へ';
+            } else {
+                swipeHint.textContent = '← スワイプで最初に戻る';
             }
         }
+
+        // 次の画面へ
+        function nextScreen() {
+            if (currentScreenIndex < totalScreens - 1) {
+                currentScreenIndex++;
+            } else {
+                // 最後の画面から最初に戻る際はindex.htmlへリダイレクト
+                window.location.href = 'index.html';
+                return;
+            }
+            updateScreen();
+        }
+
+        // 前の画面へ
+        function previousScreen() {
+            if (currentScreenIndex > 0) {
+                currentScreenIndex--;
+                updateScreen();
+            }
+        }
+
+        // タッチ開始
+        function handleStart(e) {
+            isDragging = true;
+            startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+        }
+
+        // タッチ移動
+        function handleMove(e) {
+            if (!isDragging) return;
+            
+            e.preventDefault();
+            currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            const diff = currentX - startX;
+            
+            // 画面を少し動かしてスワイプ感を演出
+            if (Math.abs(diff) < 100) {
+                screensContainer.style.transform = `translateX(calc(-${currentScreenIndex * 100}% + ${diff}px))`;
+            }
+        }
+
+        // タッチ終了
+        function handleEnd(e) {
+            if (!isDragging) return;
+            
+            isDragging = false;
+            const diff = currentX - startX;
+            
+            // スワイプの閾値（50px以上）
+            if (diff < -50) {
+                nextScreen();
+            } else if (diff > 50) {
+                previousScreen();
+            } else {
+                // 元の位置に戻す
+                updateScreen();
+            }
+            
+            currentX = 0;
+            startX = 0;
+        }
+
+        // イベントリスナーの設定
+        screensContainer.addEventListener('touchstart', handleStart, { passive: false });
+        screensContainer.addEventListener('touchmove', handleMove, { passive: false });
+        screensContainer.addEventListener('touchend', handleEnd);
+
+        // マウスイベント（デスクトップ対応）
+        screensContainer.addEventListener('mousedown', handleStart);
+        screensContainer.addEventListener('mousemove', handleMove);
+        screensContainer.addEventListener('mouseup', handleEnd);
+        screensContainer.addEventListener('mouseleave', handleEnd);
+
+        // キーボード操作（デバッグ用）
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                nextScreen();
+            } else if (e.key === 'ArrowRight') {
+                previousScreen();
+            }
+        });
 
         // 動画再生シミュレーション
         let isPlaying = false;
@@ -748,23 +855,29 @@
 
         // エクササイズ完了
         function completeExercise() {
-            alert('素晴らしい！10ポイント獲得しました！🎉');
-            showScreen('dashboardScreen');
-        }
-
-        // 自動デモモード（オプション）
-        let demoMode = false;
-        let demoStep = 0;
-        const demoScreens = ['loginScreen', 'dashboardScreen', 'videosScreen', 'videoPlayerScreen'];
-
-        function startAutoDemo() {
-            if (!demoMode) {
-                demoMode = true;
-                setInterval(() => {
-                    showScreen(demoScreens[demoStep]);
-                    demoStep = (demoStep + 1) % demoScreens.length;
-                }, 3000);
-            }
+            // 完了メッセージ表示後、自動的に次の画面へ
+            const message = document.createElement('div');
+            message.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(135deg, #e5ce4b 0%, #f4e08c 100%);
+                color: white;
+                padding: 20px 40px;
+                border-radius: 20px;
+                font-size: 18px;
+                font-weight: bold;
+                z-index: 1000;
+                animation: fadeIn 0.5s;
+            `;
+            message.textContent = '素晴らしい！10ポイント獲得！🎉';
+            document.body.appendChild(message);
+            
+            setTimeout(() => {
+                document.body.removeChild(message);
+                window.location.href = 'index.html';
+            }, 2000);
         }
     </script>
 </body>
