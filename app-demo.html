@@ -125,20 +125,12 @@
         }
 
         /* ナビゲーション矢印 */
-        .nav-arrows {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            align-items: center;
-            gap: 30px;
-            z-index: 101;
-        }
-
         .nav-arrow {
-            width: 40px;
-            height: 40px;
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             background: white;
             border: 2px solid #e5ce4b;
@@ -147,13 +139,25 @@
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s;
-            color: #e5ce4b;
+            color: #333;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .nav-prev {
+            left: 20px;
+        }
+
+        .nav-next {
+            right: 20px;
         }
 
         .nav-arrow:hover {
             background: #e5ce4b;
             color: white;
-            transform: scale(1.1);
+            transform: translateY(-50%) scale(1.1);
         }
 
         .nav-arrow:disabled {
@@ -163,14 +167,24 @@
 
         .nav-arrow:disabled:hover {
             background: white;
-            color: #e5ce4b;
-            transform: scale(1);
+            color: #333;
+            transform: translateY(-50%) scale(1);
         }
 
-        .nav-center {
-            font-size: 32px;
-            display: flex;
-            align-items: center;
+        @media (max-width: 600px) {
+            .nav-arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+            
+            .nav-prev {
+                left: 10px;
+            }
+            
+            .nav-next {
+                right: 10px;
+            }
         }
 
         /* 1. ログイン画面 */
@@ -609,6 +623,11 @@
     </style>
 </head>
 <body>
+    <!-- 左矢印（スマホの外） -->
+    <button class="nav-arrow nav-prev" onclick="previousScreen()" id="prevBtn">
+        ←
+    </button>
+
     <div class="phone-container">
         <div class="phone-screen">
             <!-- ステータスバー -->
@@ -630,20 +649,6 @@
             <!-- スワイプヒント -->
             <div class="swipe-hint">← 左にスワイプで次の画面へ</div>
 
-            <!-- ナビゲーション矢印 -->
-            <div class="nav-arrows">
-                <button class="nav-arrow nav-prev" onclick="previousScreen()" id="prevBtn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                </button>
-                <div class="nav-center">📱</div>
-                <button class="nav-arrow nav-next" onclick="nextScreen()" id="nextBtn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                </button>
-            </div>
 
             <!-- 画面コンテナ -->
             <div class="screens-container" id="screensContainer">
@@ -894,6 +899,11 @@
 
     </div>
 
+    <!-- 右矢印（スマホの外） -->
+    <button class="nav-arrow nav-next" onclick="nextScreen()" id="nextBtn">
+        →
+    </button>
+
     <script>
         // 現在の画面インデックス
         let currentScreenIndex = 0;
@@ -928,9 +938,7 @@
             const nextBtn = document.getElementById('nextBtn');
             if (prevBtn) prevBtn.disabled = currentScreenIndex === 0;
             if (nextBtn) {
-                nextBtn.innerHTML = currentScreenIndex === totalScreens - 1 ? 
-                    '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10M7 17L17 7"/></svg>' : 
-                    '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>';
+                nextBtn.textContent = currentScreenIndex === totalScreens - 1 ? '✕' : '→';
             }
         }
 
