@@ -751,8 +751,13 @@
             if (currentScreenIndex < totalScreens - 1) {
                 currentScreenIndex++;
             } else {
-                // 最後の画面から最初に戻る際はindex.htmlへリダイレクト
-                window.location.href = 'index.html';
+                // 最後の画面から親ウィンドウのcloseDemo関数を呼び出す
+                if (window.parent && window.parent.closeDemo) {
+                    window.parent.closeDemo();
+                } else {
+                    // iframeでない場合はindex.htmlへ
+                    window.location.href = 'index.html';
+                }
                 return;
             }
             updateScreen();
@@ -876,7 +881,12 @@
             
             setTimeout(() => {
                 document.body.removeChild(message);
-                window.location.href = 'index.html';
+                // 親ウィンドウのcloseDemo関数を呼び出す
+                if (window.parent && window.parent.closeDemo) {
+                    window.parent.closeDemo();
+                } else {
+                    window.location.href = 'index.html';
+                }
             }, 2000);
         }
     </script>
