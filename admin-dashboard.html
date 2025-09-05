@@ -179,6 +179,30 @@
             color: #388e3c;
         }
 
+        /* アクションボタン */
+        .action-btn {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            background: #f8f9fa;
+        }
+
+        .archive-btn {
+            border-color: #ff9800;
+            color: #ff9800;
+        }
+
+        .archive-btn:hover {
+            background: #fff3e0;
+        }
+
         /* 検索バー */
         .search-bar {
             margin-bottom: 20px;
@@ -385,7 +409,7 @@
             }
 
             /* エクスポートボタンを目立たせる */
-            .filter-btn:last-child {
+            .filter-btn:nth-child(5) {
                 grid-column: 1 / -1;
                 background: #e5ce4b;
                 color: #333;
@@ -429,6 +453,7 @@
                     <button class="filter-btn active" onclick="filterData('all')">すべて</button>
                     <button class="filter-btn" onclick="filterData('today')">今日</button>
                     <button class="filter-btn" onclick="filterData('week')">今週</button>
+                    <button class="filter-btn" onclick="filterData('archived')">アーカイブ済み</button>
                     <button class="filter-btn" onclick="exportCSV()">CSVエクスポート</button>
                 </div>
             </div>
@@ -458,6 +483,7 @@
         
         let allData = [];
         let currentFilter = 'all';
+        let showArchived = false;
         
         // 認証チェック
         async function checkAuth() {
@@ -479,7 +505,10 @@
                 
                 allData = data || [];
                 updateStats();
-                displayData(allData);
+                
+                // アーカイブ済みを除外して表示（デフォルト）
+                const activeData = allData.filter(item => !item.archived);
+                displayData(showArchived ? allData : activeData);
                 
             } catch (error) {
                 console.error('データ取得エラー:', error);
@@ -494,14 +523,17 @@
             const today = now.toISOString().split('T')[0];
             const thisMonth = now.toISOString().slice(0, 7);
             
-            document.getElementById('totalCount').textContent = allData.length;
+            // アーカイブされていないデータのみカウント
+            const activeData = allData.filter(item => !item.archived);
             
-            const todayData = allData.filter(d => 
+            document.getElementById('totalCount').textContent = activeData.length;
+            
+            const todayData = activeData.filter(d => 
                 d.created_at && d.created_at.startsWith(today)
             );
             document.getElementById('todayCount').textContent = todayData.length;
             
-            const monthData = allData.filter(d => 
+            const monthData = activeData.filter(d => 
                 d.created_at && d.created_at.startsWith(thisMonth)
             );
             document.getElementById('monthCount').textContent = monthData.length;
@@ -528,6 +560,7 @@
                             <th>電話番号</th>
                             <th>メッセージ</th>
                             <th>ステータス</th>
+                            <th>アクション</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -551,7 +584,18 @@
                         <td>${item.employees || '-'}</td>
                         <td>${item.phone || '-'}</td>
                         <td>${item.message || '-'}</td>
-                        <td><span class="status-badge status-new">新規</span></td>
+                        <td>
+                            ${item.archived 
+                                ? '<span class="status-badge" style="background: #f0f0f0; color: #999;">アーカイブ済み</span>'
+                                : '<span class="status-badge status-new">新規</span>'
+                            }
+                        </td>
+                        <td>
+                            ${item.archived
+                                ? `<button class="action-btn" onclick="unarchiveItem('${item.id}')">復元</button>`
+                                : `<button class="action-btn archive-btn" onclick="archiveItem('${item.id}')">アーカイブ</button>`
+                            }
+                        </td>
                     </tr>
                 `;
                 
@@ -590,8 +634,17 @@
                             ` : ''}
                         </div>
                         <div class="card-footer">
-                            <span class="status-badge status-new">新規</span>
-                            <span style="color: #999; font-size: 0.8rem;">${date.toLocaleTimeString('ja-JP')}</span>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                ${item.archived 
+                                    ? '<span class="status-badge" style="background: #f0f0f0; color: #999;">アーカイブ済み</span>'
+                                    : '<span class="status-badge status-new">新規</span>'
+                                }
+                                <span style="color: #999; font-size: 0.8rem;">${date.toLocaleTimeString('ja-JP')}</span>
+                            </div>
+                            ${item.archived
+                                ? `<button class="action-btn" onclick="unarchiveItem('${item.id}')">復元</button>`
+                                : `<button class="action-btn archive-btn" onclick="archiveItem('${item.id}')">アーカイブ</button>`
+                            }
                         </div>
                     </div>
                 `;
@@ -620,16 +673,26 @@
             let filteredData = allData;
             const now = new Date();
             
-            if (filter === 'today') {
-                const today = now.toISOString().split('T')[0];
-                filteredData = allData.filter(d => 
-                    d.created_at && d.created_at.startsWith(today)
-                );
-            } else if (filter === 'week') {
-                const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-                filteredData = allData.filter(d => 
-                    new Date(d.created_at) >= weekAgo
-                );
+            if (filter === 'archived') {
+                // アーカイブ済みのみ表示
+                showArchived = true;
+                filteredData = allData.filter(d => d.archived === true);
+            } else {
+                // アーカイブされていないデータのみ
+                showArchived = false;
+                filteredData = allData.filter(d => !d.archived);
+                
+                if (filter === 'today') {
+                    const today = now.toISOString().split('T')[0];
+                    filteredData = filteredData.filter(d => 
+                        d.created_at && d.created_at.startsWith(today)
+                    );
+                } else if (filter === 'week') {
+                    const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                    filteredData = filteredData.filter(d => 
+                        new Date(d.created_at) >= weekAgo
+                    );
+                }
             }
             
             displayData(filteredData);
@@ -676,6 +739,56 @@
             link.href = URL.createObjectURL(blob);
             link.download = `事前登録リスト_${new Date().toISOString().split('T')[0]}.csv`;
             link.click();
+        }
+        
+        // アーカイブ機能
+        async function archiveItem(id) {
+            if (!confirm('このデータをアーカイブしますか？')) return;
+            
+            try {
+                const { error } = await supabase
+                    .from('contacts')
+                    .update({ 
+                        archived: true,
+                        archived_at: new Date().toISOString()
+                    })
+                    .eq('id', id);
+                
+                if (error) throw error;
+                
+                // データを再取得
+                await fetchData();
+                alert('アーカイブしました');
+                
+            } catch (error) {
+                console.error('アーカイブエラー:', error);
+                alert('アーカイブに失敗しました');
+            }
+        }
+        
+        // アーカイブ解除機能
+        async function unarchiveItem(id) {
+            if (!confirm('このデータを復元しますか？')) return;
+            
+            try {
+                const { error } = await supabase
+                    .from('contacts')
+                    .update({ 
+                        archived: false,
+                        archived_at: null
+                    })
+                    .eq('id', id);
+                
+                if (error) throw error;
+                
+                // データを再取得
+                await fetchData();
+                alert('復元しました');
+                
+            } catch (error) {
+                console.error('復元エラー:', error);
+                alert('復元に失敗しました');
+            }
         }
         
         // ログアウト
